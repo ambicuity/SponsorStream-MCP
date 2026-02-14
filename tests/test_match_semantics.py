@@ -5,7 +5,7 @@ These tests encode the rules from domain.match_semantics as executable assertion
 
 import pytest
 
-from sponsorstream_mcp.domain.match_semantics import (
+from sponsorstream.domain.match_semantics import (
     RULE_EXCLUSIONS_ALWAYS,
     RULE_LOCALE_EXACT_OR_GLOBAL,
     RULE_PLACEMENT_ANNOTATE_ONLY,

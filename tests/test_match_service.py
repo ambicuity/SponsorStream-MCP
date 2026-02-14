@@ -7,16 +7,16 @@ import uuid
 
 import pytest
 
-from sponsorstream_mcp.domain.filters import VectorFilter
-from sponsorstream_mcp.domain.policy_engine import PolicyEngine
-from sponsorstream_mcp.domain.targeting_engine import TargetingEngine
-from sponsorstream_mcp.services.match_service import MatchService
-from sponsorstream_mcp.models.mcp_requests import (
+from sponsorstream.domain.filters import VectorFilter
+from sponsorstream.domain.policy_engine import PolicyEngine
+from sponsorstream.domain.targeting_engine import TargetingEngine
+from sponsorstream.services.match_service import MatchService
+from sponsorstream.models.mcp_requests import (
     MatchConstraints,
     MatchRequest,
     PlacementContext,
 )
-from sponsorstream_mcp.ports.vector_store import VectorHit
+from sponsorstream.ports.vector_store import VectorHit
 
 # ---------------------------------------------------------------------------
 # Fakes
@@ -32,35 +32,41 @@ class FakeEmbeddingProvider:
         return FIXED_VECTOR
 
 
-def _make_hit(ad_id: str, score: float, *, sensitive: bool = False,
+def _make_hit(creative_id: str, score: float, *, sensitive: bool = False,
               age_restricted: bool = False, blocked_keywords: list[str] | None = None,
-              advertiser_id: str = "adv-1") -> VectorHit:
+              advertiser_id: str = "adv-1", campaign_id: str = "camp-1") -> VectorHit:
     """Build a VectorHit matching the port's return type."""
     return VectorHit(
-        ad_id=ad_id,
+        creative_id=creative_id,
+        campaign_id=campaign_id,
         advertiser_id=advertiser_id,
         score=score,
         payload={
-            "ad_id": ad_id,
+            "creative_id": creative_id,
+            "campaign_id": campaign_id,
             "advertiser_id": advertiser_id,
-            "title": f"Title for {ad_id}",
-            "body": f"Body for {ad_id}",
+            "campaign_name": "Test Campaign",
+            "title": f"Title for {creative_id}",
+            "body": f"Body for {creative_id}",
             "cta_text": "Click",
-            "landing_url": f"https://example.com/{ad_id}",
+            "landing_url": f"https://example.com/{creative_id}",
             "topics": ["tech"],
             "locale": ["en-US"],
             "verticals": ["technology"],
             "blocked_keywords": blocked_keywords or [],
+            "audience_segments": ["devs"],
+            "keywords": ["ai"],
             "sensitive": sensitive,
             "age_restricted": age_restricted,
+            "enabled": True,
         },
     )
 
 
 SAMPLE_HITS = [
-    _make_hit("ad-1", 0.95),
-    _make_hit("ad-2", 0.80),
-    _make_hit("ad-3", 0.60),
+    _make_hit("cr-1", 0.95),
+    _make_hit("cr-2", 0.80),
+    _make_hit("cr-3", 0.60),
 ]
 
 
@@ -83,9 +89,9 @@ class FakeVectorStore:
     def ensure_collection(self, dimension): ...
     def delete_collection(self): ...
     def collection_info(self): ...
-    def upsert_batch(self, ads_with_embeddings): ...
-    def delete_ad(self, ad_id): ...
-    def get_ad(self, ad_id): ...
+    def upsert_batch(self, creatives_with_embeddings): ...
+    def delete_creative(self, creative_id): ...
+    def get_creative(self, creative_id): ...
 
 
 # ---------------------------------------------------------------------------
@@ -120,7 +126,7 @@ class TestMatchServicePipeline:
         svc, _ = _build_service()
         resp, _ = svc.match(_simple_request())
         assert len(resp.candidates) == 3
-        assert resp.candidates[0].ad_id == "ad-1"
+        assert resp.candidates[0].creative_id == "cr-1"
         assert resp.candidates[0].score == pytest.approx(0.95)
 
     def test_request_id_is_uuid(self):
@@ -160,13 +166,13 @@ class TestMatchServicePipeline:
 # ---------------------------------------------------------------------------
 
 class TestMatchId:
-    """match_id must be deterministic: uuid5(request_id, ad_id)."""
+    """match_id must be deterministic: uuid5(request_id, creative_id)."""
 
     def test_match_id_is_deterministic(self):
         svc, _ = _build_service()
         resp, _ = svc.match(_simple_request())
         c = resp.candidates[0]
-        expected = str(uuid.uuid5(uuid.UUID(resp.request_id), c.ad_id))
+        expected = str(uuid.uuid5(uuid.UUID(resp.request_id), c.creative_id))
         assert c.match_id == expected
 
     def test_different_request_ids_produce_different_match_ids(self):
@@ -182,48 +188,48 @@ class TestMatchId:
 # ---------------------------------------------------------------------------
 
 class TestPolicyFiltering:
-    """PolicyEngine must remove ineligible ads post-query."""
+    """PolicyEngine must remove ineligible creatives post-query."""
 
     def test_age_restricted_filtered_by_default(self):
-        hits = [_make_hit("ad-ok", 0.9), _make_hit("ad-age", 0.8, age_restricted=True)]
+        hits = [_make_hit("cr-ok", 0.9), _make_hit("cr-age", 0.8, age_restricted=True)]
         svc, _ = _build_service(hits)
         resp, _ = svc.match(_simple_request())
-        ids = [c.ad_id for c in resp.candidates]
-        assert "ad-ok" in ids
-        assert "ad-age" not in ids
+        ids = [c.creative_id for c in resp.candidates]
+        assert "cr-ok" in ids
+        assert "cr-age" not in ids
 
     def test_age_restricted_allowed_when_opted_in(self):
-        hits = [_make_hit("ad-ok", 0.9), _make_hit("ad-age", 0.8, age_restricted=True)]
+        hits = [_make_hit("cr-ok", 0.9), _make_hit("cr-age", 0.8, age_restricted=True)]
         svc, _ = _build_service(hits)
         req = _simple_request(constraints=MatchConstraints(age_restricted_ok=True))
         resp, _ = svc.match(req)
-        ids = [c.ad_id for c in resp.candidates]
-        assert "ad-age" in ids
+        ids = [c.creative_id for c in resp.candidates]
+        assert "cr-age" in ids
 
     def test_sensitive_filtered_by_default(self):
-        hits = [_make_hit("ad-ok", 0.9), _make_hit("ad-sens", 0.8, sensitive=True)]
+        hits = [_make_hit("cr-ok", 0.9), _make_hit("cr-sens", 0.8, sensitive=True)]
         svc, _ = _build_service(hits)
         resp, _ = svc.match(_simple_request())
-        ids = [c.ad_id for c in resp.candidates]
-        assert "ad-sens" not in ids
+        ids = [c.creative_id for c in resp.candidates]
+        assert "cr-sens" not in ids
 
     def test_sensitive_allowed_when_opted_in(self):
-        hits = [_make_hit("ad-ok", 0.9), _make_hit("ad-sens", 0.8, sensitive=True)]
+        hits = [_make_hit("cr-ok", 0.9), _make_hit("cr-sens", 0.8, sensitive=True)]
         svc, _ = _build_service(hits)
         req = _simple_request(constraints=MatchConstraints(sensitive_ok=True))
         resp, _ = svc.match(req)
-        ids = [c.ad_id for c in resp.candidates]
-        assert "ad-sens" in ids
+        ids = [c.creative_id for c in resp.candidates]
+        assert "cr-sens" in ids
 
     def test_blocked_keywords_removes_ad(self):
         """Blocked keywords vs context_text: drop when intersect (token/substring)."""
-        hits = [_make_hit("ad-ok", 0.9), _make_hit("ad-blocked", 0.8, blocked_keywords=["gambling"])]
+        hits = [_make_hit("cr-ok", 0.9), _make_hit("cr-blocked", 0.8, blocked_keywords=["gambling"])]
         svc, _ = _build_service(hits)
         req = _simple_request(context_text="I want gambling tips")
         resp, _ = svc.match(req)
-        ids = [c.ad_id for c in resp.candidates]
-        assert "ad-blocked" not in ids
-        assert "ad-ok" in ids
+        ids = [c.creative_id for c in resp.candidates]
+        assert "cr-blocked" not in ids
+        assert "cr-ok" in ids
 
 
 # ---------------------------------------------------------------------------
@@ -241,13 +247,13 @@ class TestEnginesCalled:
 
     def test_policy_applied_post_retrieval(self):
         """Policy filters hits after retrieval even when vector filter is permissive."""
-        hits = [_make_hit("ad-ok", 0.9), _make_hit("ad-age", 0.8, age_restricted=True)]
+        hits = [_make_hit("cr-ok", 0.9), _make_hit("cr-age", 0.8, age_restricted=True)]
         svc, store = _build_service(hits)
         resp, _ = svc.match(_simple_request())
         # Vector store returned both; policy dropped age-restricted
         assert len(store.hits) == 2
         assert len(resp.candidates) == 1
-        assert resp.candidates[0].ad_id == "ad-ok"
+        assert resp.candidates[0].creative_id == "cr-ok"
 
 
 # ---------------------------------------------------------------------------
@@ -287,7 +293,7 @@ class TestTargetingFilter:
         req = _simple_request(
             constraints=MatchConstraints(
                 topics=["python"], locale="en-US", verticals=["tech"],
-                exclude_advertiser_ids=["bad-adv"], exclude_ad_ids=["bad-ad"],
+                exclude_advertiser_ids=["bad-adv"], exclude_creative_ids=["bad-cr"],
             ),
         )
         svc.match(req)
@@ -304,13 +310,13 @@ class TestScoreClamping:
     """Scores should be clamped to [0, 1]."""
 
     def test_score_above_one_clamped(self):
-        hits = [_make_hit("ad-1", 1.5)]
+        hits = [_make_hit("cr-1", 1.5)]
         svc, _ = _build_service(hits)
         resp, _ = svc.match(_simple_request())
         assert resp.candidates[0].score == 1.0
 
     def test_negative_score_clamped(self):
-        hits = [_make_hit("ad-1", -0.3)]
+        hits = [_make_hit("cr-1", -0.3)]
         svc, _ = _build_service(hits)
         resp, _ = svc.match(_simple_request())
         assert resp.candidates[0].score == 0.0

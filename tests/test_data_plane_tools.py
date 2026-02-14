@@ -1,11 +1,10 @@
-"""Tests that the Data Plane MCP server exposes only the allowed tool set.
+"""Tests that the Engine MCP server exposes only the allowed tool set.
 
-No destructive or admin tools (collection create/delete, upsert, delete_ad,
-query_ads) may be registered on the Data Plane.
+No destructive or studio tools may be registered on the Engine.
 """
 
-from sponsorstream_mcp.mcp.server import create_server
-from sponsorstream_mcp.mcp.tools import DATA_PLANE_ALLOWED_TOOLS
+from sponsorstream.interface.mcp.server import create_server
+from sponsorstream.interface.mcp.tools import ENGINE_ALLOWED_TOOLS
 
 # Tools that must NEVER appear on the Data Plane
 FORBIDDEN_TOOLS = {
@@ -14,13 +13,13 @@ FORBIDDEN_TOOLS = {
     "collection_migrate",
     "collection_delete",
     "collection_create",
-    "ads_upsert_batch",
-    "ads_delete",
-    "ads_bulk_disable",
-    "ads_get",
-    "query_ads",
-    "delete_ad",
-    "upsert_ad",
+    "campaigns_upsert_batch",
+    "creatives_delete",
+    "campaigns_bulk_disable",
+    "creatives_get",
+    "campaigns_report",
+    "delete_creative",
+    "upsert_creative",
     "create_collection",
     "delete_collection",
 }
@@ -33,28 +32,28 @@ def _get_tool_names(server) -> set[str]:
     return set(tools.keys())
 
 
-def test_data_plane_exposes_only_ads_match():
-    """Data Plane must expose exactly the tools in DATA_PLANE_ALLOWED_TOOLS."""
-    server = create_server("data")
+def test_engine_exposes_only_allowed_tools():
+    """Engine must expose exactly the tools in ENGINE_ALLOWED_TOOLS."""
+    server = create_server("engine")
     tool_names = _get_tool_names(server)
-    assert tool_names == DATA_PLANE_ALLOWED_TOOLS, (
-        f"Expected {DATA_PLANE_ALLOWED_TOOLS}, got {tool_names}"
+    assert tool_names == ENGINE_ALLOWED_TOOLS, (
+        f"Expected {ENGINE_ALLOWED_TOOLS}, got {tool_names}"
     )
 
 
-def test_data_plane_has_no_forbidden_tools():
-    """No destructive / admin tool may be registered on the Data Plane."""
-    server = create_server("data")
+def test_engine_has_no_forbidden_tools():
+    """No destructive / studio tool may be registered on the Engine."""
+    server = create_server("engine")
     tool_names = _get_tool_names(server)
     overlap = tool_names & FORBIDDEN_TOOLS
-    assert not overlap, f"Forbidden tools found on Data Plane: {overlap}"
+    assert not overlap, f"Forbidden tools found on Engine: {overlap}"
 
 
-def test_control_plane_has_admin_tools():
-    """Control Plane must have admin tools and NOT ads_match."""
-    server = create_server("admin")
+def test_studio_has_admin_tools():
+    """Studio must have admin tools and NOT campaigns_match."""
+    server = create_server("studio")
     tool_names = _get_tool_names(server)
     assert "collection_ensure" in tool_names
-    assert "ads_upsert_batch" in tool_names
-    assert "ads_delete" in tool_names
-    assert "ads_match" not in tool_names, "ads_match must not be on Control Plane"
+    assert "campaigns_upsert_batch" in tool_names
+    assert "creatives_delete" in tool_names
+    assert "campaigns_match" not in tool_names, "campaigns_match must not be on Studio"

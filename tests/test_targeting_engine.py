@@ -2,9 +2,9 @@
 
 import pytest
 
-from sponsorstream_mcp.domain.filters import FieldFilter, FilterOp, VectorFilter
-from sponsorstream_mcp.domain.targeting_engine import TargetingEngine
-from sponsorstream_mcp.models.mcp_requests import MatchConstraints, PlacementContext
+from sponsorstream.domain.filters import FieldFilter, FilterOp, VectorFilter
+from sponsorstream.domain.targeting_engine import TargetingEngine
+from sponsorstream.models.mcp_requests import MatchConstraints, PlacementContext
 
 
 def _build_filter(**constraint_kwargs) -> VectorFilter:
@@ -48,6 +48,24 @@ class TestTargetingEngineTopicsVerticals:
         assert vert_filters[0].value == ["tech", "education"]
 
 
+class TestTargetingEngineAudience:
+    """Audience segments and keywords should add any_of filters."""
+
+    def test_audience_segments_adds_any_of_filter(self):
+        vf = _build_filter(audience_segments=["devs", "students"])
+        seg_filters = [f for f in vf.must if f.field == "audience_segments"]
+        assert len(seg_filters) == 1
+        assert seg_filters[0].op == FilterOp.any_of
+        assert seg_filters[0].value == ["devs", "students"]
+
+    def test_keywords_adds_any_of_filter(self):
+        vf = _build_filter(keywords=["ai", "cloud"])
+        kw_filters = [f for f in vf.must if f.field == "keywords"]
+        assert len(kw_filters) == 1
+        assert kw_filters[0].op == FilterOp.any_of
+        assert kw_filters[0].value == ["ai", "cloud"]
+
+
 class TestTargetingEngineExclusions:
     """Exclude lists always applied when non-empty."""
 
@@ -58,17 +76,17 @@ class TestTargetingEngineExclusions:
         assert adv_filters[0].op == FilterOp.not_in
         assert adv_filters[0].value == ["bad-adv"]
 
-    def test_exclude_ad_ids_adds_must_not(self):
-        vf = _build_filter(exclude_ad_ids=["bad-ad-1"])
-        ad_filters = [f for f in vf.must_not if f.field == "ad_id"]
-        assert len(ad_filters) == 1
-        assert ad_filters[0].op == FilterOp.not_in
-        assert ad_filters[0].value == ["bad-ad-1"]
+    def test_exclude_creative_ids_adds_must_not(self):
+        vf = _build_filter(exclude_creative_ids=["bad-cr-1"])
+        creative_filters = [f for f in vf.must_not if f.field == "creative_id"]
+        assert len(creative_filters) == 1
+        assert creative_filters[0].op == FilterOp.not_in
+        assert creative_filters[0].value == ["bad-cr-1"]
 
     def test_both_exclusions_when_provided(self):
         vf = _build_filter(
             exclude_advertiser_ids=["adv-1"],
-            exclude_ad_ids=["ad-1", "ad-2"],
+            exclude_creative_ids=["cr-1", "cr-2"],
         )
         assert len(vf.must_not) == 2
 

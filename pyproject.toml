@@ -1,7 +1,7 @@
 [project]
-name = "sponsorstream-mcp"
+name = "sponsorstream"
 version = "0.1.0"
-description = "Ad injector application"
+description = "SponsorStream: AI-Powered Contextual Sponsorships for Agents"
 requires-python = ">=3.10,<3.14"
 dependencies = [
     "pydantic>=2.12.5",
@@ -13,11 +13,9 @@ dependencies = [
 ]
 
 [project.scripts]
-sponsorstream-mcp = "sponsorstream_mcp.main:main"
-sponsorstream-index = "sponsorstream_mcp.cli:main"
-sponsorstream-mcp-control = "sponsorstream_mcp.main_control:main"
-sponsorstream-mcp-data = "sponsorstream_mcp.main_runtime:main"
-sponsorstream-data-plane = "sponsorstream_mcp.main_runtime:main"
+sponsorstream-engine = "sponsorstream.interface.mcp_engine:main"
+sponsorstream-studio = "sponsorstream.interface.mcp_studio:main"
+sponsorstream-cli = "sponsorstream.interface.cli:main"
 
 [build-system]
 requires = ["hatchling"]

@@ -2,13 +2,13 @@
 
 import pytest
 
-from sponsorstream_mcp.domain.policy_engine import PolicyEngine
-from sponsorstream_mcp.models.mcp_requests import MatchConstraints, PlacementContext
-from sponsorstream_mcp.ports.vector_store import VectorHit
+from sponsorstream.domain.policy_engine import PolicyEngine
+from sponsorstream.models.mcp_requests import MatchConstraints, PlacementContext
+from sponsorstream.ports.vector_store import VectorHit
 
 
 def _make_hit(
-    ad_id: str,
+    creative_id: str,
     score: float,
     *,
     sensitive: bool = False,
@@ -17,22 +17,28 @@ def _make_hit(
     advertiser_id: str = "adv-1",
 ) -> VectorHit:
     return VectorHit(
-        ad_id=ad_id,
+        creative_id=creative_id,
+        campaign_id="camp-1",
         advertiser_id=advertiser_id,
         score=score,
         payload={
-            "ad_id": ad_id,
+            "creative_id": creative_id,
+            "campaign_id": "camp-1",
             "advertiser_id": advertiser_id,
-            "title": f"Title {ad_id}",
-            "body": f"Body {ad_id}",
+            "campaign_name": "Policy Test",
+            "title": f"Title {creative_id}",
+            "body": f"Body {creative_id}",
             "cta_text": "Click",
-            "landing_url": f"https://example.com/{ad_id}",
+            "landing_url": f"https://example.com/{creative_id}",
             "topics": ["tech"],
             "locale": ["en-US"],
             "verticals": ["technology"],
             "blocked_keywords": blocked_keywords or [],
+            "audience_segments": ["devs"],
+            "keywords": ["ai"],
             "sensitive": sensitive,
             "age_restricted": age_restricted,
+            "enabled": True,
         },
     )
 
@@ -46,7 +52,7 @@ class TestPolicySensitiveGating:
         constraints = MatchConstraints()
         placement = PlacementContext()
         result = engine.apply(hits, constraints, placement)
-        ids = [h.ad_id for h in result]
+        ids = [h.creative_id for h in result]
         assert "ad-ok" in ids
         assert "ad-sens" not in ids
 
@@ -57,7 +63,7 @@ class TestPolicySensitiveGating:
         placement = PlacementContext()
         result = engine.apply(hits, constraints, placement)
         assert len(result) == 1
-        assert result[0].ad_id == "ad-sens"
+        assert result[0].creative_id == "ad-sens"
 
 
 class TestPolicyAgeRestrictedGating:
@@ -69,7 +75,7 @@ class TestPolicyAgeRestrictedGating:
         constraints = MatchConstraints()
         placement = PlacementContext()
         result = engine.apply(hits, constraints, placement)
-        ids = [h.ad_id for h in result]
+        ids = [h.creative_id for h in result]
         assert "ad-ok" in ids
         assert "ad-age" not in ids
 
@@ -80,7 +86,7 @@ class TestPolicyAgeRestrictedGating:
         placement = PlacementContext()
         result = engine.apply(hits, constraints, placement)
         assert len(result) == 1
-        assert result[0].ad_id == "ad-age"
+        assert result[0].creative_id == "ad-age"
 
 
 class TestPolicyBlockedKeywords:
@@ -95,7 +101,7 @@ class TestPolicyBlockedKeywords:
         constraints = MatchConstraints()
         placement = PlacementContext()
         result = engine.apply(hits, constraints, placement, context_text="I want gambling tips")
-        ids = [h.ad_id for h in result]
+        ids = [h.creative_id for h in result]
         assert "ad-ok" in ids
         assert "ad-blocked" not in ids
 
@@ -114,3 +120,16 @@ class TestPolicyBlockedKeywords:
         placement = PlacementContext()
         result = engine.apply(hits, constraints, placement, context_text="python tutorial")
         assert len(result) == 1
+
+
+class TestPolicySchedule:
+    """Schedule window should gate eligibility."""
+
+    def test_future_start_time_denies(self):
+        engine = PolicyEngine()
+        hit = _make_hit("ad-future", 0.9)
+        hit.payload["start_at"] = "2999-01-01T00:00:00+00:00"
+        constraints = MatchConstraints()
+        placement = PlacementContext()
+        result = engine.apply([hit], constraints, placement, context_text="test")
+        assert result == []

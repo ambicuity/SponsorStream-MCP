@@ -1,92 +1,194 @@
 [
   {
-    "ad_id": "sample-ad-001",
-    "advertiser_id": "sample-advertiser-tech",
-    "title": "Learn Python Today",
-    "body": "Master Python programming with our interactive courses. Build real-world projects and advance your career.",
-    "cta_text": "Start Learning",
-    "landing_url": "https://example.com/python",
+    "campaign_id": "camp-001",
+    "advertiser_id": "adv-tech",
+    "name": "Python Mastery",
+    "creatives": [
+      {
+        "creative_id": "cr-001-a",
+        "title": "Learn Python Today",
+        "body": "Master Python programming with our interactive courses. Build real-world projects and advance your career.",
+        "cta_text": "Start Learning",
+        "landing_url": "https://example.com/python"
+      }
+    ],
     "targeting": {
       "topics": ["programming", "python", "education", "technology"],
       "locale": ["en-US"],
       "verticals": ["education", "technology"],
-      "blocked_keywords": []
+      "blocked_keywords": [],
+      "audience_segments": ["developers", "students"],
+      "keywords": ["python", "coding", "ai"]
     },
     "policy": {
       "sensitive": false,
-      "age_restricted": false
+      "age_restricted": false,
+      "brand_safety_tier": "high"
+    },
+    "schedule": {
+      "start_at": "2024-01-01T00:00:00+00:00",
+      "end_at": "2030-01-01T00:00:00+00:00"
+    },
+    "budget": {
+      "daily_budget": 50.0,
+      "total_budget": 1000.0,
+      "currency": "USD",
+      "pacing_mode": "adaptive",
+      "cpm": 12.0,
+      "target_ctr": 0.1
     }
   },
   {
-    "ad_id": "sample-ad-002",
-    "advertiser_id": "sample-advertiser-edu",
-    "title": "Online Courses for Everyone",
-    "body": "Discover thousands of online courses in business, design, technology, and more. Learn at your own pace.",
-    "cta_text": "Browse Courses",
-    "landing_url": "https://example.com/courses",
+    "campaign_id": "camp-002",
+    "advertiser_id": "adv-edu",
+    "name": "Skill Builder",
+    "creatives": [
+      {
+        "creative_id": "cr-002-a",
+        "title": "Online Courses for Everyone",
+        "body": "Discover thousands of online courses in business, design, technology, and more. Learn at your own pace.",
+        "cta_text": "Browse Courses",
+        "landing_url": "https://example.com/courses"
+      }
+    ],
     "targeting": {
       "topics": ["education", "online learning", "courses", "skills"],
       "locale": ["en-US"],
       "verticals": ["education"],
-      "blocked_keywords": []
+      "blocked_keywords": [],
+      "audience_segments": ["career_switchers"],
+      "keywords": ["courses", "skills"]
     },
     "policy": {
       "sensitive": false,
-      "age_restricted": false
+      "age_restricted": false,
+      "brand_safety_tier": "medium"
+    },
+    "schedule": {
+      "start_at": "2024-01-01T00:00:00+00:00",
+      "end_at": "2030-01-01T00:00:00+00:00"
+    },
+    "budget": {
+      "daily_budget": 40.0,
+      "total_budget": 800.0,
+      "currency": "USD",
+      "pacing_mode": "even",
+      "cpm": 9.0
     }
   },
   {
-    "ad_id": "sample-ad-003",
-    "advertiser_id": "sample-advertiser-shop",
-    "title": "Shop the Latest Trends",
-    "body": "Find amazing deals on fashion, electronics, home goods, and more. Free shipping on orders over $50.",
-    "cta_text": "Shop Now",
-    "landing_url": "https://example.com/shop",
+    "campaign_id": "camp-003",
+    "advertiser_id": "adv-retail",
+    "name": "Trend Finds",
+    "creatives": [
+      {
+        "creative_id": "cr-003-a",
+        "title": "Shop the Latest Trends",
+        "body": "Find amazing deals on fashion, electronics, home goods, and more. Free shipping on orders over $50.",
+        "cta_text": "Shop Now",
+        "landing_url": "https://example.com/shop"
+      }
+    ],
     "targeting": {
       "topics": ["shopping", "fashion", "deals", "e-commerce"],
       "locale": ["en-US"],
       "verticals": ["retail", "e-commerce"],
-      "blocked_keywords": []
+      "blocked_keywords": [],
+      "audience_segments": ["deal_seekers"],
+      "keywords": ["deals", "shopping"]
     },
     "policy": {
       "sensitive": false,
-      "age_restricted": false
+      "age_restricted": false,
+      "brand_safety_tier": "medium"
+    },
+    "schedule": {
+      "start_at": "2024-01-01T00:00:00+00:00",
+      "end_at": "2030-01-01T00:00:00+00:00"
+    },
+    "budget": {
+      "daily_budget": 60.0,
+      "total_budget": 1200.0,
+      "currency": "USD",
+      "pacing_mode": "accelerated",
+      "cpm": 8.0
     }
   },
   {
-    "ad_id": "sample-ad-004",
-    "advertiser_id": "sample-advertiser-fitness",
-    "title": "Get Fit This Year",
-    "body": "Join thousands of members achieving their fitness goals. Personalized workout plans and nutrition guidance.",
-    "cta_text": "Start Free Trial",
-    "landing_url": "https://example.com/fitness",
+    "campaign_id": "camp-004",
+    "advertiser_id": "adv-fitness",
+    "name": "Fit Momentum",
+    "creatives": [
+      {
+        "creative_id": "cr-004-a",
+        "title": "Get Fit This Year",
+        "body": "Join thousands of members achieving their fitness goals. Personalized workout plans and nutrition guidance.",
+        "cta_text": "Start Free Trial",
+        "landing_url": "https://example.com/fitness"
+      }
+    ],
     "targeting": {
       "topics": ["fitness", "health", "workout", "wellness"],
       "locale": ["en-US"],
       "verticals": ["health", "fitness"],
-      "blocked_keywords": []
+      "blocked_keywords": [],
+      "audience_segments": ["wellness_seekers"],
+      "keywords": ["fitness", "workout"]
     },
     "policy": {
       "sensitive": false,
-      "age_restricted": false
+      "age_restricted": false,
+      "brand_safety_tier": "high"
+    },
+    "schedule": {
+      "start_at": "2024-01-01T00:00:00+00:00",
+      "end_at": "2030-01-01T00:00:00+00:00"
+    },
+    "budget": {
+      "daily_budget": 30.0,
+      "total_budget": 600.0,
+      "currency": "USD",
+      "pacing_mode": "even",
+      "cpm": 7.0
     }
   },
   {
-    "ad_id": "sample-ad-005",
-    "advertiser_id": "sample-advertiser-finance",
-    "title": "Invest in Your Future",
-    "body": "Start investing with as little as $1. Build wealth with low-cost index funds and expert guidance.",
-    "cta_text": "Get Started",
-    "landing_url": "https://example.com/invest",
+    "campaign_id": "camp-005",
+    "advertiser_id": "adv-finance",
+    "name": "Future Investor",
+    "creatives": [
+      {
+        "creative_id": "cr-005-a",
+        "title": "Invest in Your Future",
+        "body": "Start investing with as little as $1. Build wealth with low-cost index funds and expert guidance.",
+        "cta_text": "Get Started",
+        "landing_url": "https://example.com/invest"
+      }
+    ],
     "targeting": {
       "topics": ["investing", "finance", "wealth", "savings"],
       "locale": ["en-US"],
       "verticals": ["finance"],
-      "blocked_keywords": []
+      "blocked_keywords": [],
+      "audience_segments": ["investors"],
+      "keywords": ["invest", "wealth"]
     },
     "policy": {
       "sensitive": false,
-      "age_restricted": false
+      "age_restricted": false,
+      "brand_safety_tier": "high"
+    },
+    "schedule": {
+      "start_at": "2024-01-01T00:00:00+00:00",
+      "end_at": "2030-01-01T00:00:00+00:00"
+    },
+    "budget": {
+      "daily_budget": 35.0,
+      "total_budget": 700.0,
+      "currency": "USD",
+      "pacing_mode": "adaptive",
+      "cpm": 11.0,
+      "target_ctr": 0.08
     }
   }
 ]

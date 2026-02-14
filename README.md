@@ -1,8 +1,8 @@
 <div align="center">
-  <img src="SponsorStream%20MCP.png" alt="SponsorStream-MCP Logo">
-  
+  <img src="SponsorStream%20MCP.png" alt="SponsorStream Logo">
+
   <p>
-    <strong>AI-Powered Contextual Ads for the Agentic Web</strong>
+    <strong>Contextual Campaign Matching for the Agentic Web</strong>
   </p>
 
   <p>
@@ -12,13 +12,13 @@
     <a href="./LICENSE">
       <img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License">
     </a>
-    <img src="https://img.shields.io/badge/Architecture-Data%20%2F%20Control%20Plane-blueviolet" alt="Dual Plane Arch">
+    <img src="https://img.shields.io/badge/Surface-Engine%20%2F%20Studio-blueviolet" alt="Engine/Studio">
     <img src="https://img.shields.io/badge/MCP-Compatible-orange" alt="MCP Compatible">
   </p>
 
   <p align="center">
     🐦 <a href="https://x.com/mr19042000">Follow Updates</a> •
-    📧 <a href="mailto:ritesh19@bu.edu?subject=SponsorStream-MCP">Contact & Feedback</a>
+    📧 <a href="mailto:ritesh19@bu.edu?subject=SponsorStream">Contact & Feedback</a>
   </p>
 
   <p>
@@ -29,180 +29,130 @@
 </div>
 <br/>
 
-**SponsorStream-MCP** is an advanced monetization engine designed specifically for Large Language Model (LLM) agents. It empowers developers to inject contextually relevant, semantic advertisements directly into AI interactions without compromising user experience.
+**SponsorStream** is a semantic sponsorship engine for LLM agents. It injects contextual campaign creatives into AI interactions using meaning-based matching, not brittle keyword rules.
 
 ## Overview
 
-Unlike traditional keyword-based ad systems, SponsorStream leverages **semantic vector search** to understand the intent behind a user's prompt. By embedding conversation context locally and querying a vector database (Qdrant), it retrieves highly relevant sponsorship candidates that feel native to the conversation.
+SponsorStream embeds conversational context locally (FastEmbed), queries Qdrant for candidate creatives, then applies typed targeting, policy gating, scheduling, and pacing. The MCP surface is intentionally small and safe.
 
-Key differentiators:
-*   **Semantic Understanding**: Matches ads based on meaning, not just keywords.
-*   **Safety First**: Built with a strict separation between the **Data Plane** (read-only, safe for agents) and the **Control Plane** (admin-only management).
-*   **MCP Native**: Fully compatible with the Model Context Protocol, making it plug-and-play for any MCP-compliant agent.
-
-## Use Cases
-
-1.  **Monetized AI Assistants**: seamlessly integrate sponsored recommendations into customer support or shopping bots.
-2.  **Context-Aware RAG**: identifying commercial intent within Retrieval-Augmented Generation workflows to serve relevant partner content.
-3.  **Smart Affiliate matching**: dynamically inserting affiliate links that genuinely help the user based on their current problem or query.
-4.  **Content Discovery**: Powering "Suggested for you" engines based on deep semantic analysis of consumed content.
-
-OR [**Explore the Architecture**](#architecture)
+Key highlights:
+- **Engine/Studio split**: Engine is read-only for agent runtime; Studio handles provisioning and ingestion.
+- **Campaign + Creative model**: one campaign, many creatives, shared targeting/policy/schedule.
+- **Scheduling & pacing**: start/end windows plus adaptive pacing from real-time analytics.
+- **SQLite analytics**: fast local reporting, campaign summaries, pacing inputs.
 
 ## Prerequisites
 
 - Python 3.10
-- [uv](https://docs.astral.sh/uv/) - Fast Python package manager
-- [Qdrant](https://qdrant.tech/) - Running locally
+- [uv](https://docs.astral.sh/uv/) (recommended) or pip
+- [Qdrant](https://qdrant.tech/) running locally
 
-## Setup
-
-### Install uv
+## Install
 
 ```bash
-# macOS/Linux
-curl -LsSf https://astral.sh/uv/install.sh | sh
-
-# Windows (PowerShell)
-powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
-
-# Or with pip
-pip install uv
-```
-
-### Start Qdrant Locally
-
-```bash
-# Using Docker
-docker run -p 6333:6333 -p 6334:6334 qdrant/qdrant
-
-# Or download binary from https://github.com/qdrant/qdrant/releases
-```
-
-### Install Dependencies
-
-```bash
-# Install all dependencies and create virtual environment
+# uv (recommended)
 uv sync
+
+# pip (editable for development)
+pip install -e .
+
+# or standard install
+pip install .
 ```
 
-### Configure Environment (Optional)
+## Quickstart
 
 ```bash
-# Copy example env file (defaults work for local Qdrant)
-cp .env.example .env
+# 1) Start Qdrant
+docker run -d --name qdrant -p 6333:6333 -p 6334:6334 qdrant/qdrant
+
+# 2) Create collection
+uv run sponsorstream-cli create
+
+# 3) Seed sample campaigns
+uv run sponsorstream-cli seed
+
+# 4) Start Engine (LLM-facing)
+uv run sponsorstream-engine
+
+# 5) Start Studio (admin)
+uv run sponsorstream-studio
+
+# 6) View analytics
+uv run sponsorstream-cli report --since-hours 24
 ```
 
-## Demo ads setup (step-by-step)
-
-Follow these steps in order to load demo ads and confirm everything works. Demo ads are defined in `data/test_ads.json`; re-running `seed` upserts them so the store matches the file.
-
-**Step 1.** Start Qdrant (in a terminal):
-
-```bash
-docker run -d --name qdrant \
-  -p 6333:6333 -p 6334:6334 \
-  qdrant/qdrant
-
-docker ps --filter name=qdrant
-```
-
-**Step 2.** In the project directory, install dependencies:
-
-```bash
-uv sync
-```
-
-**Step 3.** (Optional) Copy env:
-
-```bash
-cp .env.example .env
-```
-
-**Step 4.** Create the collection:
-
-```bash
-uv run sponsorstream-index create 
-```
-
-If it exists (uv run sponsorstream-index delete)
-
-**Step 5.** Load demo ads from the file:
-
-```bash
-uv run sponsorstream-index seed
-```
-
-To use a different file: `uv run sponsorstream-index seed --file path/to/ads.json`
-
-**Step 6.** Verify it worked:
-
-- Run:
-
-  ```bash
-  uv run sponsorstream-index info
-  ```
-
-  Confirm **Points count** is 5 (or the number of ads in your JSON file).
-
-- Optionally, query ads from Python to confirm they are being served:
-
-  ```bash
-  uv run python -c "
-  from sponsorstream_mcp.wiring import build_match_service
-  from sponsorstream_mcp.models.mcp_requests import MatchRequest
-  r, _ = build_match_service().match(MatchRequest(context_text='python', top_k=2))
-  print(r.model_dump_json(indent=2))
-  "
-  ```
-
-  You should see matching ads (e.g. the Python/coding ad) in the output.
+Sample campaigns are in `data/test_ads.json` (campaign/creative schema). Re-running `seed` upserts.
 
 ## Architecture
 
-The system is split into two MCP server planes:
+| Surface | Purpose | Who calls it | Entrypoint |
+|---------|---------|-------------|------------|
+| **Engine** | Matching, read-only retrieval | LLMs / agents | `uv run sponsorstream-engine` |
+| **Studio** | Provisioning, ingestion, admin ops | Humans, CI/CD | `uv run sponsorstream-studio` or `uv run sponsorstream-cli` |
 
-| Plane | Purpose | Who calls it | Entrypoint |
-|-------|---------|-------------|------------|
-| **Data Plane** | Ad matching, read-only retrieval | LLMs / agents | `uv run sponsorstream-mcp-data` or `uv run sponsorstream-data-plane` |
-| **Control Plane** | Provisioning, ingestion, admin ops | Humans, CI/CD, backoffice | `uv run sponsorstream-mcp-control` or `uv run sponsorstream-index` (CLI) |
+### Engine tools (LLM-facing)
 
-Run two separate processes for production: one Control Plane (admin) and one Data Plane (runtime). Each has its own auth scope (optional `MCP_ADMIN_KEY` / `MCP_DATA_KEY`).
+- `campaigns_match` — semantic matching (context_text, constraints, top_k); returns candidates + match_id
+- `campaigns_explain` — audit trace for a prior match
+- `campaigns_health` — liveness/readiness
+- `campaigns_capabilities` — placements, constraints, embedding model, schema version
 
-### Data Plane tools (runtime, LLM-facing)
+### Studio tools (admin)
 
-- `ads_match` — semantic ad matching (context_text, placement, constraints, top_k); returns candidates and match_id for explain
-- `ads_explain` — audit trace for a prior match (match_id)
-- `ads_health` — liveness/readiness (Qdrant + embedding)
-- `ads_capabilities` — supported placements, constraint keys, embedding model, schema version
+- `collection_ensure` — create/align collection
+- `collection_info` — collection metadata
+- `collection_migrate` — optional schema migrations
+- `campaigns_upsert_batch` — batch campaign/creative ingestion
+- `creatives_delete` — delete a creative
+- `campaigns_bulk_disable` — disable creatives by filter
+- `creatives_get` — fetch a creative
+- `campaigns_report` — analytics summary or campaign report
 
-The Data Plane uses an explicit allowlist (`DATA_PLANE_ALLOWED_TOOLS`). No destructive or admin tools can be registered.
+## Campaign Schema (excerpt)
 
-### Control Plane tools (admin)
-
-- `collection_ensure` — create/align collection (dimension, embedding_model_id, schema_version)
-- `collection_info` — collection metadata (points_count, dimension, embedding_model_id, schema_version)
-- `collection_migrate` — optional schema migrations (from_version, to_version)
-- `ads_upsert_batch` — batch ad ingestion (JSON array)
-- `ads_delete` — delete an ad by id
-- `ads_bulk_disable` — set enabled=false for ads matching a filter (JSON filter)
-- `ads_get` — fetch a single ad (debugging)
-
-### Repo structure
-
+```json
+{
+  "campaign_id": "camp-001",
+  "advertiser_id": "adv-tech",
+  "name": "Python Mastery",
+  "creatives": [
+    {
+      "creative_id": "cr-001-a",
+      "title": "Learn Python Today",
+      "body": "Master Python programming...",
+      "cta_text": "Start Learning",
+      "landing_url": "https://example.com/python"
+    }
+  ],
+  "targeting": {
+    "topics": ["python", "education"],
+    "locale": ["en-US"],
+    "audience_segments": ["developers"],
+    "keywords": ["python", "ai"]
+  },
+  "policy": {
+    "sensitive": false,
+    "age_restricted": false,
+    "brand_safety_tier": "high"
+  },
+  "schedule": {
+    "start_at": "2024-01-01T00:00:00+00:00",
+    "end_at": "2030-01-01T00:00:00+00:00"
+  },
+  "budget": {
+    "daily_budget": 50.0,
+    "total_budget": 1000.0,
+    "pacing_mode": "adaptive",
+    "cpm": 12.0,
+    "target_ctr": 0.1
+  }
+}
 ```
-src/sponsorstream_mcp/
-  models/           # Ad, Targeting, Policy; MCP request/response DTOs
-  services/         # MatchService, PolicyEngine, TargetingEngine, IndexService
-  adapters/         # QdrantVectorStore, FastEmbedProvider
-  mcp/              # server, tools, auth, observability
-  config/           # RuntimeSettings, env vars
-  ops/              # smoke_check, migrations
-```
 
-### Configuration
+## Configuration
 
-Runtime settings are managed via environment variables (or `.env`), validated at startup by Pydantic:
+Environment variables (or `.env`) validated at startup:
 
 | Variable | Default | Description |
 |----------|---------|-------------|
@@ -211,117 +161,69 @@ Runtime settings are managed via environment variables (or `.env`), validated at
 | `QDRANT_COLLECTION_NAME` | `ads` | Collection name |
 | `EMBEDDING_MODEL_ID` | `BAAI/bge-small-en-v1.5` | Embedding model |
 | `EMBEDDING_DIMENSION` | `384` | Vector dimension |
+| `CREATIVE_ID_NAMESPACE` | `a1b2...` | UUID namespace for creative IDs |
 | `MAX_TOP_K` | `100` | Max results per match query |
-| `MAX_BATCH_SIZE` | `500` | Max ads per upsert batch |
+| `MAX_BATCH_SIZE` | `500` | Max creatives per upsert batch |
 | `REQUEST_TIMEOUT_SECONDS` | `30.0` | Per-request timeout |
-| `REQUIRE_ADMIN_KEY` | `false` | If true, Control Plane requires `MCP_ADMIN_KEY` env |
-| `REQUIRE_DATA_KEY` | `false` | If true, Data Plane requires `MCP_DATA_KEY` env |
+| `REQUIRE_ENGINE_KEY` | `false` | Require `MCP_ENGINE_KEY` |
+| `REQUIRE_STUDIO_KEY` | `false` | Require `MCP_STUDIO_KEY` |
+| `ANALYTICS_DB_PATH` | `data/analytics.db` | SQLite analytics path |
 
-## Running with uv
-
-### Run Scripts
-
-```bash
-# Data Plane MCP server (LLM-facing, read-only): ads_match, ads_explain, ads_health, ads_capabilities
-uv run sponsorstream-mcp-data
-# or: uv run sponsorstream-data-plane
-
-# Control Plane MCP server (admin): collection.*, ads.upsert_batch, ads.delete, ads.bulk_disable, ads.get
-uv run sponsorstream-mcp-control
-
-# CLI (Control Plane): create collection, seed ads, info, delete
-uv run sponsorstream-index create          # Create the collection
-uv run sponsorstream-index seed            # Add sample ads for testing
-uv run sponsorstream-index info            # Show collection info
-uv run sponsorstream-index delete          # Delete the collection
-```
-
-### Run Python Files Directly
-
-```bash
-uv run python -m sponsorstream_mcp.main_runtime   # Data Plane MCP
-uv run python -m sponsorstream_mcp.main_control   # Control Plane MCP
-uv run python -m sponsorstream_mcp.cli create     # Control Plane CLI
-uv run python -m sponsorstream_mcp.cli seed
-```
-
-**Note**: The `seed` command loads demo ads from `data/test_ads.json` (or `--file <path>`) and upserts them into the collection. Run `create` first to set up the collection, then `seed` to load the test data.
-
-## Validating the MCP servers
-
-### 1. Run the test suite
+## Validation
 
 ```bash
 uv run pytest tests/ -v
 ```
 
-This runs the Data Plane guardrail tests which assert:
-- Data Plane exposes only the allowlisted tools (`ads_match`, `ads_explain`, `ads_health`, `ads_capabilities`)
-- No forbidden/destructive tools on the Data Plane
-- Control Plane has admin tools and does **not** expose Data Plane–only tools
-
-### 2. Verify Data Plane exposes the allowlisted tools
+Verify tool allowlists:
 
 ```bash
 uv run python -c "
-from sponsorstream_mcp.mcp.server import create_server
-from sponsorstream_mcp.mcp.tools import DATA_PLANE_ALLOWED_TOOLS
-s = create_server('data')
+from sponsorstream.interface.mcp.server import create_server
+from sponsorstream.interface.mcp.tools import ENGINE_ALLOWED_TOOLS
+s = create_server('engine')
 tools = set(s._tool_manager._tools.keys())
-print(f'Server: {s.name}')
-print(f'Tools:  {tools}')
-assert tools == DATA_PLANE_ALLOWED_TOOLS, f'FAIL: expected {DATA_PLANE_ALLOWED_TOOLS}'
-print('PASS: Data Plane allowlist registered')
+assert tools == ENGINE_ALLOWED_TOOLS
+print('Engine tool allowlist OK')
 "
 ```
 
-### 3. Verify Control Plane starts with admin tools
+## Usage Example
 
-```bash
-uv run python -c "
-from sponsorstream_mcp.mcp.server import create_server
-s = create_server('admin')
-tools = set(s._tool_manager._tools.keys())
-print(f'Server: {s.name}')
-print(f'Tools:  {tools}')
-assert 'ads_match' not in tools, 'FAIL: ads_match on admin plane'
-assert 'collection_ensure' in tools
-print('PASS: admin tools registered, no ads_match')
-"
-```
+```python
+from sponsorstream.domain.sponsorship import Campaign, CreativeSpec
+from sponsorstream.models.mcp_requests import MatchRequest
+from sponsorstream.wiring import build_index_service, build_match_service
 
-### 4. Verify ads_match DTO validation
-
-```bash
-uv run python -c "
-from sponsorstream_mcp.models import MatchRequest, MatchConstraints, PlacementContext, MatchResponse, AdCandidate
-
-# Valid request
-req = MatchRequest(
-    context_text='I want to learn Python',
-    top_k=5,
-    placement=PlacementContext(placement='sidebar', surface='chat'),
-    constraints=MatchConstraints(topics=['python'], locale='en-US', sensitive_ok=False),
+campaign = Campaign(
+    campaign_id="camp-001",
+    advertiser_id="adv-1",
+    name="Python Mastery",
+    creatives=[
+        CreativeSpec(
+            creative_id="cr-001-a",
+            title="Learn Python Today",
+            body="Master Python programming...",
+            cta_text="Start",
+            landing_url="https://example.com/python",
+        )
+    ],
 )
-print(f'MatchRequest OK: context_text={req.context_text!r}, top_k={req.top_k}')
-print(f'  constraints.topics={req.constraints.topics}, locale={req.constraints.locale}')
 
-# Valid response
-resp = MatchResponse(
-    candidates=[AdCandidate(ad_id='ad-001', advertiser_id='adv-1', title='Learn Python',
-        body='Courses', cta_text='Go', landing_url='https://example.com', score=0.95, match_id='m-1')],
-    request_id='req-xyz', placement='sidebar',
-)
-print(f'MatchResponse OK: {len(resp.candidates)} candidate(s)')
+index_svc = build_index_service()
+index_svc.ensure_collection()
+index_svc.upsert_campaigns([campaign])
 
-# Invalid request (empty context) fails
-try:
-    MatchRequest(context_text='', top_k=5)
-    print('FAIL: empty context_text should be rejected')
-except Exception:
-    print('PASS: empty context_text rejected')
-"
+match_svc = build_match_service()
+resp, trace = match_svc.match(MatchRequest(context_text="python tutorial", top_k=3))
+print(resp.model_dump_json(indent=2))
 ```
+## Contact
+
+If you are building MCP tooling or agent monetization stacks, feel free to reach out:
+
+- 🐦 https://x.com/mr19042000
+- 📧 mailto:ritesh19@bu.edu
 
 ### 5. Verify config loads and validates
 
