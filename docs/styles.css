@@ -426,6 +426,10 @@ section {
     grid-template-columns: repeat(3, 1fr);
 }
 
+.four-col {
+    grid-template-columns: repeat(4, 1fr);
+}
+
 .use-case-card {
     text-align: center;
     padding: 3rem 2rem;
@@ -765,6 +769,7 @@ footer a:hover {
     }
 
     .three-col,
+    .four-col,
     .steps-container,
     .architecture-grid,
     .faq-grid {

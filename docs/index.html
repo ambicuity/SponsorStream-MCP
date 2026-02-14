@@ -108,6 +108,36 @@
             </div>
         </section>
 
+        <section id="why-sponsorstream">
+            <div class="section-header">
+                <h2>Why SponsorStream?</h2>
+                <p>Monetize without ruining trust.</p>
+            </div>
+            <div class="grid four-col">
+                <div class="feature-card">
+                    <div class="icon-box"><i class="fas fa-chart-line"></i></div>
+                    <h3>Relevance-First</h3>
+                    <p>Ads match the meaning of the conversation, not just keywords. They feel native, not jarring.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon-box"><i class="fas fa-bolt"></i></div>
+                    <h3>Fast Onboarding</h3>
+                    <p>Add sponsors without hand-built rules or constant maintenance. Let semantic matching do the work.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon-box"><i class="fas fa-list-check"></i></div>
+                    <h3>Auditability</h3>
+                    <p>Answer "why did this ad show up?" with a full audit trace for every match.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon-box"><i class="fas fa-shield-alt"></i></div>
+                    <h3>Security Boundary</h3>
+                    <p>Runtime stays **read-only**. No constructive operations in production. No surprises.</p>
+                </div>
+            </div>
+        </section>
+
         <section id="who-its-for" class="alt-bg">
             <div class="section-header">
                 <h2>Who It's For</h2>
@@ -137,8 +167,8 @@
 
         <section id="technical-deep-dive">
             <div class="section-header">
-                <h2>Technical Deep Dive</h2>
-                <p>Under the hood of SponsorStream.</p>
+                <h2>Architecture & Security</h2>
+                <p>Dual-plane isolation for enterprise-grade safety.</p>
             </div>
 
             <div class="tabs">
@@ -216,17 +246,28 @@ uv run sponsorstream-studio</code></pre>
             </div>
             <div class="faq-grid">
                 <div class="faq-item">
-                    <h3>Is this an ad server?</h3>
-                    <p>Yes, but for agents. It prioritizes semantic relevance over keyword bidding.</p>
+                    <h3>How is this different from keyword targeting?</h3>
+                    <p>Keywords break when language shifts. Semantic retrieval uses vector embeddings to understand the
+                        *meaning* of the context, ensuring relevance even without exact word matches.</p>
                 </div>
                 <div class="faq-item">
-                    <h3>Can I use it for RAG?</h3>
-                    <p>Absolutely. It fits perfectly into a RAG pipeline to inject sponsored chunks alongside organic
-                        ones.</p>
+                    <h3>Do we have to send data to a third party?</h3>
+                    <p>No. Context embedding is local (using FastEmbed) and storage is your own Qdrant instance. Your
+                        data stays with you.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Can we block advertisers or topics?</h3>
+                    <p>Yes. Typed exclusions and policy flags are first-class citizens. You can block specific domains,
+                        keywords, or entire semantic categories.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Can we explain why an ad appeared?</h3>
+                    <p>Absolutely. The <code>ads_explain</code> tool returns a full audit trace tied to a specific
+                        match, detailing the similarity score and any filters applied.</p>
                 </div>
                 <div class="faq-item">
                     <h3>Is it open source?</h3>
-                    <p>Yes, SponsorStream is open source and available on GitHub.</p>
+                    <p>Yes, SponsorStream is open source and available on GitHub under the MIT License.</p>
                 </div>
             </div>
         </section>
