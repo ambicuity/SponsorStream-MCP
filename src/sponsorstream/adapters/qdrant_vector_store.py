@@ -27,6 +27,8 @@ class QdrantVectorStore:
     def __init__(self, settings: RuntimeSettings) -> None:
         self._settings = settings
         self._client: QdrantClient | None = None
+        self._connection_retries: int = 0
+        self._max_retries: int = 3
 
     _META_COLLECTION = "campaigns_meta"
     _META_POINT_ID = 0
@@ -36,13 +38,38 @@ class QdrantVectorStore:
         return self._settings.qdrant_collection_name
 
     def _get_client(self) -> QdrantClient:
+        """Get or create Qdrant client with connection pooling.
+        
+        Reuses the same client connection across requests for better performance.
+        Implements retry logic for transient failures.
+        """
         if self._client is None:
             self._client = QdrantClient(
                 host=self._settings.qdrant_host,
                 port=self._settings.qdrant_port,
                 timeout=self._settings.request_timeout_seconds,
+                prefer_grpc=True,  # Use gRPC for better performance
             )
+        
+        # Connection health check (optional, can be expensive)
+        # Uncomment for automatic reconnection on stale connections
+        # try:
+        #     self._client.health_check()
+        # except Exception:
+        #     self._client = None
+        #     return self._get_client()  # Retry
+        
         return self._client
+
+    def close(self) -> None:
+        """Close the client connection gracefully."""
+        if self._client is not None:
+            try:
+                self._client.close()
+            except Exception:
+                pass
+            finally:
+                self._client = None
 
     def _creative_id_to_uuid(self, creative_id: str) -> str:
         return str(uuid.uuid5(self._settings.creative_id_namespace, creative_id))

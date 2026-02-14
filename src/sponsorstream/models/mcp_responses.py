@@ -20,6 +20,7 @@ class CreativeCandidate(BaseModel):
     match_id: str = Field(..., description="Opaque ID for campaigns.explain lookups")
     pacing_weight: float = Field(default=1.0, ge=0.0, le=1.0, description="Pacing weight applied")
     pacing_reason: str = Field(default="", description="Reason for pacing decision")
+    boost_applied: float = Field(default=1.0, ge=0.0, description="Boost factor from boost_keywords")
 
 
 class MatchResponse(BaseModel):
@@ -31,3 +32,12 @@ class MatchResponse(BaseModel):
     )
     request_id: str = Field(..., description="Trace ID for this request")
     placement: str = Field(..., description="Placement slot that was requested")
+    warnings: list[str] = Field(
+        default_factory=list,
+        description="Optional warnings (e.g., 'context_text too short', 'all eligible creatives budget-paced')",
+    )
+    constraint_impact: dict[str, int] | None = Field(
+        default=None,
+        description="Optional: how many candidates were rejected by each constraint",
+    )
+

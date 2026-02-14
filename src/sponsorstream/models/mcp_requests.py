@@ -78,6 +78,10 @@ class MatchRequest(BaseModel):
         le=100,
         description="Number of creative candidates to return",
     )
+    boost_keywords: dict[str, float] | None = Field(
+        default=None,
+        description="Optional: keyword boost factors (e.g. {'python': 1.5, 'ai': 1.2})",
+    )
     placement: PlacementContext = Field(
         default_factory=PlacementContext,
         description="Where the creative will be shown",
