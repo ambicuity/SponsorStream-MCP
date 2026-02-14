@@ -123,25 +123,25 @@ cp .env.example .env
 **Step 4.** Create the collection:
 
 ```bash
-uv run ad-index create 
+uv run sponsorstream-index create 
 ```
 
-If it exists (uv run ad-index delete)
+If it exists (uv run sponsorstream-index delete)
 
 **Step 5.** Load demo ads from the file:
 
 ```bash
-uv run ad-index seed
+uv run sponsorstream-index seed
 ```
 
-To use a different file: `uv run ad-index seed --file path/to/ads.json`
+To use a different file: `uv run sponsorstream-index seed --file path/to/ads.json`
 
 **Step 6.** Verify it worked:
 
 - Run:
 
   ```bash
-  uv run ad-index info
+  uv run sponsorstream-index info
   ```
 
   Confirm **Points count** is 5 (or the number of ads in your JSON file).
@@ -165,8 +165,8 @@ The system is split into two MCP server planes:
 
 | Plane | Purpose | Who calls it | Entrypoint |
 |-------|---------|-------------|------------|
-| **Data Plane** | Ad matching, read-only retrieval | LLMs / agents | `uv run ad-mcp-data` or `uv run ad-data-plane` |
-| **Control Plane** | Provisioning, ingestion, admin ops | Humans, CI/CD, backoffice | `uv run ad-mcp-control` or `uv run ad-index` (CLI) |
+| **Data Plane** | Ad matching, read-only retrieval | LLMs / agents | `uv run sponsorstream-mcp-data` or `uv run sponsorstream-data-plane` |
+| **Control Plane** | Provisioning, ingestion, admin ops | Humans, CI/CD, backoffice | `uv run sponsorstream-mcp-control` or `uv run sponsorstream-index` (CLI) |
 
 Run two separate processes for production: one Control Plane (admin) and one Data Plane (runtime). Each has its own auth scope (optional `MCP_ADMIN_KEY` / `MCP_DATA_KEY`).
 
@@ -224,17 +224,17 @@ Runtime settings are managed via environment variables (or `.env`), validated at
 
 ```bash
 # Data Plane MCP server (LLM-facing, read-only): ads_match, ads_explain, ads_health, ads_capabilities
-uv run ad-mcp-data
-# or: uv run ad-data-plane
+uv run sponsorstream-mcp-data
+# or: uv run sponsorstream-data-plane
 
 # Control Plane MCP server (admin): collection.*, ads.upsert_batch, ads.delete, ads.bulk_disable, ads.get
-uv run ad-mcp-control
+uv run sponsorstream-mcp-control
 
 # CLI (Control Plane): create collection, seed ads, info, delete
-uv run ad-index create          # Create the collection
-uv run ad-index seed            # Add sample ads for testing
-uv run ad-index info            # Show collection info
-uv run ad-index delete          # Delete the collection
+uv run sponsorstream-index create          # Create the collection
+uv run sponsorstream-index seed            # Add sample ads for testing
+uv run sponsorstream-index info            # Show collection info
+uv run sponsorstream-index delete          # Delete the collection
 ```
 
 ### Run Python Files Directly

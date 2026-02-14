@@ -12,7 +12,7 @@ from .wiring import build_match_service
 
 
 # Initialize FastMCP server
-mcp = FastMCP("ad-injector")
+mcp = FastMCP("sponsorstream-mcp")
 
 
 @mcp.tool()

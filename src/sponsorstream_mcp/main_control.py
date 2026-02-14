@@ -4,15 +4,16 @@ Starts the MCP Control Plane server (admin-only: provisioning, ingestion).
 Use for CI/CD, backoffice, or trusted operators.
 
 Usage:
-    python -m ad_injector.main_control
+    python -m sponsorstream_mcp.main_control
     # or:
-    ad-mcp-control
+    sponsorstream-mcp-control
 """
 
 from __future__ import annotations
 
 from .mcp.auth import check_scope
 from .mcp.server import create_server
+from .config import get_settings
 
 
 def main() -> None:

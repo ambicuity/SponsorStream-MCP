@@ -1,10 +1,10 @@
-"""Main entry point for the ad-injector application."""
+"""Main entry point for the SponsorStream-MCP application."""
 
 from .mcp_server import run_server
 
 
 def main():
-    """Main function for the ad-injector MCP server."""
+    """Main function for the SponsorStream-MCP MCP server."""
     run_server()
 
 

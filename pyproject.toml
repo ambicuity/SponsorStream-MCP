@@ -13,11 +13,11 @@ dependencies = [
 ]
 
 [project.scripts]
-ad-injector = "sponsorstream_mcp.main:main"
-ad-index = "sponsorstream_mcp.cli:main"
-ad-mcp-control = "sponsorstream_mcp.main_control:main"
-ad-mcp-data = "sponsorstream_mcp.main_runtime:main"
-ad-data-plane = "sponsorstream_mcp.main_runtime:main"
+sponsorstream-mcp = "sponsorstream_mcp.main:main"
+sponsorstream-index = "sponsorstream_mcp.cli:main"
+sponsorstream-mcp-control = "sponsorstream_mcp.main_control:main"
+sponsorstream-mcp-data = "sponsorstream_mcp.main_runtime:main"
+sponsorstream-data-plane = "sponsorstream_mcp.main_runtime:main"
 
 [build-system]
 requires = ["hatchling"]

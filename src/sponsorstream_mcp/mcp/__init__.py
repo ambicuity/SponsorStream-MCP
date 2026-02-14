@@ -1,4 +1,4 @@
-"""MCP server package for ad-injector (Control Plane + Data Plane)."""
+"""MCP server package for SponsorStream-MCP (Control Plane + Data Plane)."""
 
 from .server import create_server
 
