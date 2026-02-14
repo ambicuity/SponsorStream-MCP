@@ -5,192 +5,242 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SponsorStream - Engine/Studio MCP</title>
+    <meta name="description"
+        content="Contextual campaign matching for the agentic web. Semantic sponsorships, not keyword hacks.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ambicuity.github.io/SponsorStream-MCP/">
+    <meta property="og:title" content="SponsorStream - Engine/Studio MCP">
+    <meta property="og:description"
+        content="Contextual campaign matching for the agentic web. Semantic sponsorships, not keyword hacks.">
+    <meta property="og:image" content="https://repository-images.githubusercontent.com/images/default-social-card.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://ambicuity.github.io/SponsorStream-MCP/">
+    <meta property="twitter:title" content="SponsorStream - Engine/Studio MCP">
+    <meta property="twitter:description"
+        content="Contextual campaign matching for the agentic web. Semantic sponsorships, not keyword hacks.">
+    <meta property="twitter:image"
+        content="https://repository-images.githubusercontent.com/images/default-social-card.png">
+
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=cal-sans:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body>
 
     <header>
         <div class="container">
-            <p class="eyebrow">Engine / Studio MCP</p>
-            <h1 class="logo">SponsorStream</h1>
-            <p class="tagline">Contextual campaign matching for the agentic web. Semantic sponsorships, not keyword
-                hacks.</p>
-
-            <div class="badges" style="margin-bottom: 2rem;">
-                <span class="badge">MCP-Compatible</span>
-                <span class="badge">Python 3.10+</span>
-                <span class="badge">Qdrant</span>
-                <span class="badge">Analytics + Pacing</span>
-            </div>
-
-            <div class="hero-buttons">
-                <a href="#architecture" class="btn btn-secondary">See architecture</a>
-                <a href="#get-started" class="btn btn-primary">Try demo</a>
-                <a href="https://github.com/ambicuity/SponsorStream-MCP" class="btn btn-secondary">GitHub</a>
-            </div>
+            <nav>
+                <div class="logo">SponsorStream</div>
+                <div class="nav-links">
+                    <a href="#outcomes">Overview</a>
+                    <a href="#who-its-for">Use Cases</a>
+                    <a href="#architecture">Architecture</a>
+                    <a href="https://github.com/ambicuity/SponsorStream-MCP" target="_blank" class="github-link"><i
+                            class="fab fa-github"></i> GitHub</a>
+                </div>
+            </nav>
         </div>
     </header>
+
+    <section id="hero">
+        <div class="hero-background"></div>
+        <div class="container">
+            <div class="hero-content">
+                <div class="eyebrow-badge">Engine / Studio MCP</div>
+                <h1 class="hero-title">Contextual Campaign Matching for the <span class="gradient-text">Agentic
+                        Web</span></h1>
+                <p class="hero-subtitle">Semantic sponsorships, not keyword hacks. Native, relevant, and
+                    privacy-focused.</p>
+
+                <div class="badges">
+                    <span class="badge"><i class="fas fa-check-circle"></i> MCP-Compatible</span>
+                    <span class="badge"><i class="fab fa-python"></i> Python 3.10+</span>
+                    <span class="badge"><i class="fas fa-database"></i> Qdrant</span>
+                    <span class="badge"><i class="fas fa-chart-line"></i> Analytics + Pacing</span>
+                </div>
+
+                <div class="hero-buttons">
+                    <a href="#get-started" class="btn btn-primary">Get Started <i class="fas fa-arrow-right"></i></a>
+                    <a href="#architecture" class="btn btn-secondary">View Architecture</a>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <main class="container">
 
         <section id="outcomes">
-            <h2>Overview</h2>
-            <div class="grid">
-                <div class="card">
-                    <h3>The 10-second explanation</h3>
-                    <p>Most ad systems are brittle because they match strings. LLM apps need meaning-based matching.</p>
-                    <p>SponsorStream is a semantic sponsorship engine: your agent sends context, the Engine retrieves
-                        relevant creatives, and policy + pacing keep delivery safe and balanced.</p>
+            <div class="section-header">
+                <h2>Why SponsorStream?</h2>
+                <p>Most ad systems are brittle. LLM apps need meaning-based matching.</p>
+            </div>
+
+            <div class="grid feature-grid">
+                <div class="card feature-card">
+                    <div class="icon-box"><i class="fas fa-bullseye"></i></div>
+                    <h3>Semantic Matching</h3>
+                    <p>Your agent sends context, the Engine retrieves relevant creatives using vector embeddings. No
+                        more keyword stuffing.</p>
                 </div>
-                <div class="card">
-                    <h3>For Executives</h3>
-                    <p>Monetize without ruining trust.</p>
+                <div class="card feature-card">
+                    <div class="icon-box"><i class="fas fa-shield-alt"></i></div>
+                    <h3>Safety & Policy</h3>
+                    <p>Built-in policy checks and pacing ensure delivery is safe, balanced, and respects user trust.</p>
+                </div>
+                <div class="card feature-card">
+                    <div class="icon-box"><i class="fas fa-bolt"></i></div>
+                    <h3>High Performance</h3>
+                    <p>Powered by Qdrant and FastEmbed for lightning-fast retrieval and matching tailored for real-time
+                        interactions.</p>
+                </div>
+                <!-- Executives Section merged into features for better flow -->
+                <div class="card feature-card">
+                    <div class="icon-box"><i class="fas fa-chart-pie"></i></div>
+                    <h3>Business Ready</h3>
                     <ul>
-                        <li>📈 <strong>Relevance-first delivery:</strong> Creatives feel native to the interaction.</li>
-                        <li>⚙ <strong>Faster onboarding:</strong> Campaigns ship with structured targeting.</li>
-                        <li>📋 <strong>Auditability:</strong> Traces for every match.</li>
-                        <li>🔒 <strong>Engine/Studio split:</strong> Runtime stays read-only.</li>
+                        <li>📈 Relevance-first delivery</li>
+                        <li>⚙ Faster onboarding</li>
+                        <li>📋 Full auditability</li>
                     </ul>
                 </div>
             </div>
         </section>
 
-        <section id="who-its-for">
-            <h2>Who this is for</h2>
-            <div class="grid">
-                <div class="card">
-                    <span class="feature-icon">🤖</span>
-                    <h3>AI assistants</h3>
-                    <p>Customer support, internal ops, sales, shopping—any agent that benefits from contextual
-                        sponsorships.</p>
+        <section id="who-its-for" class="alt-bg">
+            <div class="section-header">
+                <h2>Built for the Future</h2>
+                <p>Designed for the next generation of applications.</p>
+            </div>
+            <div class="grid three-col">
+                <div class="card use-case-card">
+                    <div class="card-image">🤖</div>
+                    <h3>AI Assistants</h3>
+                    <p>Perfect for customer support, internal ops, sales, and shopping agents that need context-aware
+                        monetization.</p>
                 </div>
-                <div class="card">
-                    <span class="feature-icon">🔍</span>
-                    <h3>RAG and search</h3>
-                    <p>Sponsored context alongside organic retrieval and semantic search results.</p>
+                <div class="card use-case-card">
+                    <div class="card-image">🔍</div>
+                    <h3>RAG & Search</h3>
+                    <p>Seamlessly integrate sponsored context alongside your organic retrieval and semantic search
+                        results.</p>
                 </div>
-                <div class="card">
-                    <span class="feature-icon">💡</span>
-                    <h3>Commerce and media</h3>
-                    <p>Affiliate, recommended, or brand inserts that respect context and brand safety.</p>
+                <div class="card use-case-card">
+                    <div class="card-image">💡</div>
+                    <h3>Commerce & Media</h3>
+                    <p>Power affiliate recommendations and brand inserts that respect the user's current context and
+                        intent.</p>
                 </div>
             </div>
         </section>
 
         <section id="flow">
-            <h2>How it works</h2>
-            <div class="grid">
-                <div class="card">
-                    <h3>1. Your app sends context</h3>
-                    <p>Chat turns, page content, query text—anything the user is currently doing.</p>
+            <div class="section-header">
+                <h2>How It Works</h2>
+            </div>
+            <div class="steps-container">
+                <div class="step-item">
+                    <div class="step-number">01</div>
+                    <h3>Context Injection</h3>
+                    <p>Your app sends the user's current context (chat history, page content, query) to the Engine.</p>
                 </div>
-                <div class="card">
-                    <h3>2. Engine matches creatives</h3>
-                    <p>Embedding + Qdrant retrieval, then targeting, policy, scheduling, and pacing checks.</p>
+                <div class="step-item">
+                    <div class="step-number">02</div>
+                    <h3>Semantic Retrieval</h3>
+                    <p>Engine performs embedding and Qdrant retrieval, applies targeting, policy, and pacing checks.</p>
                 </div>
-                <div class="card">
-                    <h3>3. You render the insert</h3>
-                    <p>Inline, sidebar, banner, feed—your UI stays in control.</p>
+                <div class="step-item">
+                    <div class="step-number">03</div>
+                    <h3>Native Rendering</h3>
+                    <p>You receive the match and render it natively—inline, sidebar, or banner. Your UI stays in
+                        control.</p>
                 </div>
             </div>
         </section>
 
         <section id="architecture">
-            <h2>Architecture</h2>
-            <p>Most monetization plugins are risky because runtime can mutate data. SponsorStream splits
-                responsibilities into a <strong>Engine/Studio architecture</strong>.</p>
+            <div class="section-header">
+                <h2>Engine / Studio Architecture</h2>
+                <p>Separation of concerns for security and reliability.</p>
+            </div>
 
-            <div class="grid" style="margin-top: 2rem;">
-                <div class="card" style="border-color: var(--accent-color);">
-                    <h3>Engine (Runtime)</h3>
-                    <p><em>Campaign matching, read-only retrieval. Called by LLMs.</em></p>
-                    <pre><code>uv run sponsorstream-engine</code></pre>
-                    <ul>
-                        <li><code>campaigns_match</code>: Semantic matching with constraints</li>
-                        <li><code>campaigns_explain</code>: Audit trace</li>
-                        <li><code>campaigns_health</code>: Liveness/readiness</li>
-                        <li><code>campaigns_capabilities</code>: Placement + schema info</li>
+            <div class="architecture-grid">
+                <div class="arch-card engine">
+                    <div class="arch-header">
+                        <h3>Engine (Runtime)</h3>
+                        <span class="badge-sm">Read-Only</span>
+                    </div>
+                    <p>Handles campaign matching and retrieval. Optimized for low latency. Called by LLMs.</p>
+                    <div class="code-block">uv run sponsorstream-engine</div>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check"></i> Semantic matching</li>
+                        <li><i class="fas fa-check"></i> Audit tracing</li>
+                        <li><i class="fas fa-check"></i> Health checks</li>
                     </ul>
                 </div>
-                <div class="card" style="border-color: var(--success-color);">
-                    <h3>Studio (Admin)</h3>
-                    <p><em>Provisioning, ingestion, ops. Called by Humans/CI.</em></p>
-                    <pre><code>uv run sponsorstream-studio</code></pre>
-                    <ul>
-                        <li><code>collection_ensure</code>: Create collection</li>
-                        <li><code>campaigns_upsert_batch</code>: Ingestion</li>
-                        <li><code>creatives_delete</code>: Cleanup</li>
-                        <li><code>campaigns_report</code>: Analytics summary</li>
+
+                <div class="arch-card studio">
+                    <div class="arch-header">
+                        <h3>Studio (Admin)</h3>
+                        <span class="badge-sm">Write Access</span>
+                    </div>
+                    <p>Manages provisioning, ingestion, and operations. Called by Humans or CI pipelines.</p>
+                    <div class="code-block">uv run sponsorstream-studio</div>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check"></i> Collection management</li>
+                        <li><i class="fas fa-check"></i> Batch ingestion</li>
+                        <li><i class="fas fa-check"></i> Analytics reporting</li>
                     </ul>
                 </div>
             </div>
         </section>
 
-        <section id="get-started">
-            <h2>Get Started</h2>
-            <h3>Prerequisites</h3>
-            <p>Python 3.10+, uv, Docker (for Qdrant)</p>
+        <section id="get-started" class="cta-section">
+            <h2>Ready to Stream?</h2>
+            <p>Get up and running in minutes with Python 3.10+, uv, and Docker.</p>
 
-            <h3>1. Install uv</h3>
-            <pre><code>curl -LsSf https://astral.sh/uv/install.sh | sh</code></pre>
-
-            <h3>2. Start Qdrant</h3>
-            <pre><code>docker run -d --name qdrant -p 6333:6333 -p 6334:6334 qdrant/qdrant</code></pre>
-
-            <h3>3. Sync & Seed</h3>
-            <pre><code>uv sync
-uv run sponsorstream-cli create
-uv run sponsorstream-cli seed</code></pre>
-
-                <h3>4. Run Servers</h3>
-                <pre><code># Engine (LLM-facing)
-        uv run sponsorstream-engine
-
-        # Studio (admin)
-        uv run sponsorstream-studio</code></pre>
-        </section>
-
-        <section id="technical-deep-dive">
-            <h2>Technical Deep Dive</h2>
-            <p>SponsorStream is built on local embeddings (FastEmbed) and Qdrant. Context embedding stays local;
-                storage and retrieval use your own infrastructure.</p>
-
-            <div class="grid">
-                <div class="card">
-                    <h3>Repo Structure</h3>
-                    <pre><code>src/sponsorstream/
-  domain/    # Campaign/creative models
-  services/  # Match + index logic
-  adapters/  # Qdrant/FastEmbed
-  interface/ # MCP server/tools
-  modules/   # Analytics, pacing
-  config/    # Settings</code></pre>
+            <div class="installation-steps">
+                <div class="install-step">
+                    <span>1. Install uv</span>
+                    <pre><code>curl -LsSf https://astral.sh/uv/install.sh | sh</code></pre>
                 </div>
-                <div class="card">
-                    <h3>Key Features</h3>
-                    <ul>
-                        <li>🌐 Semantic matching (not strings)</li>
-                        <li>⚖ Typed targeting + policy gating</li>
-                        <li>🕒 Scheduling + adaptive pacing</li>
-                        <li>📊 SQLite analytics + reports</li>
-                    </ul>
+                <div class="install-step">
+                    <span>2. Start Qdrant</span>
+                    <pre><code>docker run -d --name qdrant -p 6333:6333 -p 6334:6334 qdrant/qdrant</code></pre>
+                </div>
+                <div class="install-step">
+                    <span>3. Sync & Seed</span>
+                    <pre><code>uv sync && uv run sponsorstream-cli create && uv run sponsorstream-cli seed</code></pre>
+                </div>
+                <div class="install-step">
+                    <span>4. Run Servers</span>
+                    <pre><code>uv run sponsorstream-engine
+uv run sponsorstream-studio</code></pre>
                 </div>
             </div>
         </section>
 
-        <section id="contact">
-            <h2>Contact</h2>
-            <p>Want native sponsor inserts that don’t trash your product? I’m happy to pressure-test your architecture.
-            </p>
-            <div style="margin-top: 1rem;">
-                <a href="https://github.com/ambicuity/SponsorStream-MCP" class="btn btn-secondary">GitHub</a>
-                <a href="mailto:ritesh19@bu.edu" class="btn btn-secondary">Email me</a>
-                <a href="https://x.com/mr19042000" class="btn btn-secondary">Twitter</a>
-                <a href="https://buymeacoffee.com/ritesh.rana" class="btn btn-secondary">Buy Me A Coffee</a>
+        <section id="contact" class="footer-cta">
+            <div class="container">
+                <h2>Get in Touch</h2>
+                <p>Want native sponsor inserts that don’t trash your product? Let's talk.</p>
+                <div class="social-links">
+                    <a href="https://github.com/ambicuity/SponsorStream-MCP" class="btn btn-outline"><i
+                            class="fab fa-github"></i> GitHub</a>
+                    <a href="mailto:ritesh19@bu.edu" class="btn btn-outline"><i class="fas fa-envelope"></i> Email</a>
+                    <a href="https://x.com/mr19042000" class="btn btn-outline"><i class="fab fa-twitter"></i>
+                        Twitter</a>
+                    <a href="https://buymeacoffee.com/ritesh.rana" class="btn btn-outline"><i class="fas fa-coffee"></i>
+                        Buy Me A Coffee</a>
+                </div>
             </div>
         </section>
 
@@ -198,8 +248,8 @@ uv run sponsorstream-cli seed</code></pre>
 
     <footer>
         <div class="container">
-            <p>SponsorStream — MIT License</p>
-            <p>Created by Ritesh Rana</p>
+            <p>&copy; 2024 SponsorStream MCP. All rights reserved.</p>
+            <p class="credits">Created by <a href="https://github.com/ritesh1904">Ritesh Rana</a></p>
         </div>
     </footer>
 
