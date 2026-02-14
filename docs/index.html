@@ -244,30 +244,55 @@ uv run sponsorstream-studio</code></pre>
             <div class="section-header">
                 <h2>Frequently Asked Questions</h2>
             </div>
-            <div class="faq-grid">
+            <div class="faq-accordion">
                 <div class="faq-item">
-                    <h3>How is this different from keyword targeting?</h3>
-                    <p>Keywords break when language shifts. Semantic retrieval uses vector embeddings to understand the
-                        *meaning* of the context, ensuring relevance even without exact word matches.</p>
+                    <button class="faq-question">
+                        <span>How is this different from keyword targeting?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Keywords break when language shifts. Semantic retrieval uses vector embeddings to understand
+                            the *meaning* of the context, ensuring relevance even without exact word matches.</p>
+                    </div>
                 </div>
                 <div class="faq-item">
-                    <h3>Do we have to send data to a third party?</h3>
-                    <p>No. Context embedding is local (using FastEmbed) and storage is your own Qdrant instance. Your
-                        data stays with you.</p>
+                    <button class="faq-question">
+                        <span>Do we have to send data to a third party?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>No. Context embedding is local (using FastEmbed) and storage is your own Qdrant instance.
+                            Your data stays with you.</p>
+                    </div>
                 </div>
                 <div class="faq-item">
-                    <h3>Can we block advertisers or topics?</h3>
-                    <p>Yes. Typed exclusions and policy flags are first-class citizens. You can block specific domains,
-                        keywords, or entire semantic categories.</p>
+                    <button class="faq-question">
+                        <span>Can we block advertisers or topics?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Yes. Typed exclusions and policy flags are first-class citizens. You can block specific
+                            domains, keywords, or entire semantic categories.</p>
+                    </div>
                 </div>
                 <div class="faq-item">
-                    <h3>Can we explain why an ad appeared?</h3>
-                    <p>Absolutely. The <code>ads_explain</code> tool returns a full audit trace tied to a specific
-                        match, detailing the similarity score and any filters applied.</p>
+                    <button class="faq-question">
+                        <span>Can we explain why an ad appeared?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Absolutely. The <code>campaigns_explain</code> tool returns a full audit trace tied to a
+                            specific match, detailing the similarity score and any filters applied.</p>
+                    </div>
                 </div>
                 <div class="faq-item">
-                    <h3>Is it open source?</h3>
-                    <p>Yes, SponsorStream is open source and available on GitHub under the MIT License.</p>
+                    <button class="faq-question">
+                        <span>Is it open source?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Yes, SponsorStream is open source and available on GitHub under the MIT License.</p>
+                    </div>
                 </div>
             </div>
         </section>
@@ -340,6 +365,29 @@ uv run sponsorstream-studio</code></pre>
                 icon.classList.add('fa-moon');
                 localStorage.setItem('theme', 'dark');
             }
+        });
+
+        // FAQ Accordion
+        const faqQuestions = document.querySelectorAll('.faq-question');
+
+        faqQuestions.forEach(question => {
+            question.addEventListener('click', () => {
+                const item = question.parentElement;
+                const isActive = item.classList.contains('active');
+
+                // Close all other items
+                document.querySelectorAll('.faq-item').forEach(i => {
+                    i.classList.remove('active');
+                    i.querySelector('.faq-answer').style.maxHeight = null;
+                });
+
+                // Toggle current item
+                if (!isActive) {
+                    item.classList.add('active');
+                    const answer = item.querySelector('.faq-answer');
+                    answer.style.maxHeight = answer.scrollHeight + "px";
+                }
+            });
         });
     </script>
 
