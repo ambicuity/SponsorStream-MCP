@@ -2,7 +2,7 @@
   <img src="SponsorStream%20MCP.png" alt="SponsorStream-MCP Logo">
   
   <p>
-    <strong>A lightweight, semantic ad-engine for the LLMs, available through MCP</strong>
+    <strong>AI-Powered Contextual Ads for the Agentic Web</strong>
   </p>
 
   <p>
@@ -29,26 +29,25 @@
 </div>
 <br/>
 
-A simple MCP Server that serves advertisements to LLMs! Use this to Inject Advertisements from your sponsors in your LLM. 
+**SponsorStream-MCP** is an advanced monetization engine designed specifically for Large Language Model (LLM) agents. It empowers developers to inject contextually relevant, semantic advertisements directly into AI interactions without compromising user experience.
 
-## Introduction
+## Overview
 
+Unlike traditional keyword-based ad systems, SponsorStream leverages **semantic vector search** to understand the intent behind a user's prompt. By embedding conversation context locally and querying a vector database (Qdrant), it retrieves highly relevant sponsorship candidates that feel native to the conversation.
 
-**SponsorStream-MCP** is a lightweight semantic ad-matching engine built for **LLM applications**. It exposes a small, safe tool surface via **MCP** so agents can request relevant ads using natural-language context (chat turns, page content, search queries) — without brittle keyword rules.
+Key differentiators:
+*   **Semantic Understanding**: Matches ads based on meaning, not just keywords.
+*   **Safety First**: Built with a strict separation between the **Data Plane** (read-only, safe for agents) and the **Control Plane** (admin-only management).
+*   **MCP Native**: Fully compatible with the Model Context Protocol, making it plug-and-play for any MCP-compliant agent.
 
-Under the hood, SponsorStream-MCP embeds your context locally (FastEmbed) and retrieves candidates from **Qdrant** using vector similarity plus **typed constraints** (topics, locale, verticals, exclusions, policy flags). It’s designed with a hard security boundary: the **Data Plane** is read-only and allowlisted, while the **Control Plane** handles ingestion and admin operations separately.
+## Use Cases
 
-Use it when you want “native” sponsor inserts or product recommendations that match meaning, not strings — and you want the architecture to stay sane when you ship to production.
+1.  **Monetized AI Assistants**: seamlessly integrate sponsored recommendations into customer support or shopping bots.
+2.  **Context-Aware RAG**: identifying commercial intent within Retrieval-Augmented Generation workflows to serve relevant partner content.
+3.  **Smart Affiliate matching**: dynamically inserting affiliate links that genuinely help the user based on their current problem or query.
+4.  **Content Discovery**: Powering "Suggested for you" engines based on deep semantic analysis of consumed content.
 
-
-## Where can you use this?
-- AI Agents & Assistants: Seamlessly inject relevant product recommendations or sponsored messages into chat interfaces (e.g., customer support bots, shopping assistants).
-
-- RAG (Retrieval-Augmented Generation) Pipelines: Serve "sponsored context" alongside organic retrieval results, allowing for high-relevance native advertising in search or Q&A tools.
-
-- Content Discovery Platforms: Power "You might also like" features or affiliate link insertion based on the semantic meaning of the content being consumed, rather than fragile keyword matching.
-
-OR [**take inspiration from the architecture**](#architecture)
+OR [**Explore the Architecture**](#architecture)
 
 ## Prerequisites
 
