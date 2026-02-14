@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AdKit - Semantic Ads for AI</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <h1 class="logo">AdKit MCP</h1>
+        <p class="tagline">Native ads for AI—semantic matching, not keyword hacks. LLM-ready sponsor inserts via MCP.</p>
+        
+        <div class="badges" style="margin-bottom: 2rem;">
+            <span class="badge">MCP-Compatible</span>
+            <span class="badge">Python 3.10+</span>
+            <span class="badge">Qdrant</span>
+            <span class="badge">Dual-plane security</span>
+        </div>
+
+        <div class="hero-buttons">
+            <a href="#technical-deep-dive" class="btn btn-secondary">See architecture</a>
+            <a href="#get-started" class="btn btn-primary">Try demo</a>
+            <a href="https://github.com/ambicuity/SponsorStream-MCP" class="btn btn-secondary">GitHub</a>
+        </div>
+    </div>
+</header>
+
+<main class="container">
+
+    <section id="outcomes">
+        <h2>Overview</h2>
+        <div class="grid">
+            <div class="card">
+                <h3>The 10-second explanation</h3>
+                <p>Most ad systems are brittle because they match strings. LLM apps need meaning-based matching.</p>
+                <p>AdKit is a lightweight semantic ad engine: your LLM app requests relevant sponsor inserts using natural language context, and AdKit matches ads semantically using embeddings + vector search.</p>
+            </div>
+            <div class="card">
+                <h3>For Executives</h3>
+                <p>Monetize without ruining trust.</p>
+                <ul>
+                    <li>📈 <strong>Relevance-first ads:</strong> Ads that feel native to the conversation.</li>
+                    <li>⚙ <strong>Fast sponsor onboarding:</strong> Zero hand-built rules.</li>
+                    <li>📋 <strong>Auditability:</strong> Full audit trace for every match.</li>
+                    <li>🔒 <strong>Security boundary:</strong> Runtime stays read-only.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="who-its-for">
+        <h2>Who this is for</h2>
+        <div class="grid">
+            <div class="card">
+                <span class="feature-icon">🤖</span>
+                <h3>AI assistants</h3>
+                <p>Customer support, internal ops, sales, shopping—any agent that benefits from relevant sponsor inserts.</p>
+            </div>
+            <div class="card">
+                <span class="feature-icon">🔍</span>
+                <h3>RAG search</h3>
+                <p>Systems that want "sponsored context" alongside organic retrieval results.</p>
+            </div>
+            <div class="card">
+                <span class="feature-icon">💡</span>
+                <h3>Content experiences</h3>
+                <p>"You might also like" or affiliate inserts based on meaning—not keywords.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="flow">
+        <h2>How it works</h2>
+        <div class="grid">
+            <div class="card">
+                <h3>1. Your app sends context</h3>
+                <p>Chat turns, page content, query text—anything the user is currently doing.</p>
+            </div>
+            <div class="card">
+                <h3>2. Semantic Match</h3>
+                <p>AdKit embeds context locally, retrieves candidates via Qdrant, then filters by targeting and policy.</p>
+            </div>
+            <div class="card">
+                <h3>3. Render Insert</h3>
+                <p>Inline, sidebar, banner, feed—your UI stays in control.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="architecture">
+        <h2>Architecture</h2>
+        <p>Most "monetization plugins" become a security disaster because runtime can mutate data. AdKit splits responsibilities into a <strong>Dual-plane architecture</strong>.</p>
+        
+        <div class="grid" style="margin-top: 2rem;">
+            <div class="card" style="border-color: var(--accent-color);">
+                <h3>Data Plane (Runtime)</h3>
+                <p><em>Ad matching, read-only retrieval. Called by LLMs.</em></p>
+                <pre><code>uv run ad-mcp-data</code></pre>
+                <ul>
+                    <li><code>ads_match</code>: Semantic matching with constraints</li>
+                    <li><code>ads_explain</code>: Audit trace</li>
+                    <li><code>ads_health</code>: Liveness/readiness</li>
+                </ul>
+            </div>
+            <div class="card" style="border-color: var(--success-color);">
+                <h3>Control Plane (Admin)</h3>
+                <p><em>Provisioning, ingestion, ops. Called by Humans/CI.</em></p>
+                <pre><code>uv run ad-mcp-control</code></pre>
+                <ul>
+                    <li><code>collection_ensure</code>: Create collection</li>
+                    <li><code>ads_upsert_batch</code>: Ingestion</li>
+                    <li><code>ads_delete</code>: Cleanup</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="get-started">
+        <h2>Get Started</h2>
+        <h3>Prerequisites</h3>
+        <p>Python 3.10+, uv, Docker (for Qdrant)</p>
+
+        <h3>1. Install uv</h3>
+        <pre><code>curl -LsSf https://astral.sh/uv/install.sh | sh</code></pre>
+
+        <h3>2. Start Qdrant</h3>
+        <pre><code>docker run -d --name qdrant -p 6333:6333 -p 6334:6334 qdrant/qdrant</code></pre>
+
+        <h3>3. Sync & Seed</h3>
+        <pre><code>uv sync
+uv run ad-index create
+uv run ad-index seed</code></pre>
+
+        <h3>4. Run Servers</h3>
+        <pre><code># Data Plane
+uv run ad-mcp-data
+
+# Control Plane
+uv run ad-mcp-control</code></pre>
+    </section>
+
+    <section id="technical-deep-dive">
+        <h2>Technical Deep Dive</h2>
+        <p>AdKit is built on local embeddings (FastEmbed) and Qdrant. Context embedding stays local; storage and retrieval use your own infrastructure.</p>
+        
+        <div class="grid">
+            <div class="card">
+                <h3>Repo Structure</h3>
+                <pre><code>src/ad_injector/
+  models/    # DTOs
+  services/  # Logic
+  adapters/  # Qdrant/FastEmbed
+  mcp/       # Server/Tools
+  config/    # Settings</code></pre>
+            </div>
+            <div class="card">
+                <h3>Key Features</h3>
+                <ul>
+                    <li>🌐 Semantic matching (not strings)</li>
+                    <li>⚖ Typed targeting constraints</li>
+                    <li>🔍 Explainability (Audit traces)</li>
+                    <li>🔒 Minimal MCP tool surface</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <section id="contact">
+         <h2>Contact</h2>
+         <p>Want native sponsor inserts that don’t trash your product? I’m happy to pressure-test your architecture.</p>
+         <div style="margin-top: 1rem;">
+             <a href="https://github.com/ambicuity/SponsorStream-MCP" class="btn btn-secondary">GitHub</a>
+             <a href="mailto:ritesh19@bu.edu" class="btn btn-secondary">Email me</a>
+             <a href="#" class="btn btn-secondary">Twitter</a>
+             <a href="#" class="btn btn-secondary">Buy Me A Coffee</a>
+         </div>
+    </section>
+
+</main>
+
+<footer>
+    <div class="container">
+        <p>AdKit — MIT License</p>
+        <p>Created by Ritesh Rana</p>
+    </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,29 @@
+[project]
+name = "ad-injector"
+version = "0.1.0"
+description = "Ad injector application"
+requires-python = ">=3.10,<3.14"
+dependencies = [
+    "pydantic>=2.12.5",
+    "python-dotenv>=1.2.1",
+    "qdrant-client>=1.16.2",
+    "mcp>=1.0.0",
+    "fastembed>=0.2.0",
+    "pydantic-settings>=2.12.0",
+]
+
+[project.scripts]
+ad-injector = "ad_injector.main:main"
+ad-index = "ad_injector.cli:main"
+ad-mcp-control = "ad_injector.main_control:main"
+ad-mcp-data = "ad_injector.main_runtime:main"
+ad-data-plane = "ad_injector.main_runtime:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.2",
+]
