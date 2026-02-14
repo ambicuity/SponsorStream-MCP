@@ -1,18 +1,26 @@
 :root {
-    /* Color Palette - Modern & Professional */
-    --primary-color: #0d1117;
-    /* Dark background */
-    --secondary-color: #161b22;
-    /* Slightly lighter background */
-    --accent-color: #238636;
-    /* GitHub Green-ish accent */
-    --accent-hover: #2ea043;
-    --text-primary: #f0f6fc;
-    --text-secondary: #8b949e;
-    --border-color: #30363d;
-    --card-bg: #161b22;
-    --gradient-start: #238636;
-    --gradient-end: #1f6feb;
+    /* Color Palette - Vibrant & Premium */
+    --primary-color: #050505;
+    /* Blackest black */
+    --secondary-color: #0a0a0a;
+    /* Deep dark */
+
+    /* Vibrant Neon Accents */
+    --accent-color: #00ff9d;
+    /* Neon Green */
+    --accent-hover: #00cc7d;
+    --accent-blue: #00f0ff;
+    /* Cyan */
+    --accent-purple: #bd00ff;
+    /* Neon Purple */
+
+    --text-primary: #ffffff;
+    --text-secondary: #a0a0a0;
+    --border-color: #222;
+    --card-bg: #111;
+
+    --gradient-start: #00ff9d;
+    --gradient-end: #00f0ff;
 
     /* Typography */
     --font-heading: 'Cal Sans', 'Inter', sans-serif;
@@ -23,11 +31,12 @@
     --header-height: 80px;
 
     /* Effects */
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.1);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.8);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 255, 157, 0.1);
+    /* Green glow */
     --radius-md: 8px;
-    --radius-lg: 12px;
+    --radius-lg: 16px;
 }
 
 /* Base Styles */
@@ -560,6 +569,125 @@ footer a:hover {
     color: var(--accent-color);
 }
 
+/* Navigation Fix */
+.nav-links {
+    display: flex;
+    gap: 1.5rem;
+    /* Reduced gap to fit more items */
+    align-items: center;
+}
+
+.nav-links a {
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+/* Tabs for Deep Dive */
+.tabs {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.tab-btn {
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.tab-btn:hover {
+    border-color: var(--accent-color);
+    color: var(--text-primary);
+    box-shadow: 0 0 10px rgba(0, 255, 157, 0.2);
+}
+
+.tab-btn.active {
+    background-color: rgba(0, 255, 157, 0.1);
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+    box-shadow: 0 0 15px rgba(0, 255, 157, 0.3);
+}
+
+.tab-content {
+    display: none;
+    animation: fadeIn 0.5s;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.demo-placeholder {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+    border: 1px dashed var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 4rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.demo-placeholder .icon-box {
+    font-size: 3rem;
+    color: var(--text-secondary);
+    margin-bottom: 0;
+}
+
+/* FAQ Grid */
+.faq-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.faq-item {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    padding: 2rem;
+    border-radius: var(--radius-lg);
+    transition: all 0.3s ease;
+}
+
+.faq-item:hover {
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.1);
+}
+
+.faq-item h3 {
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+    font-size: 1.2rem;
+}
+
+.faq-item p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
     .hero-title {
@@ -568,7 +696,8 @@ footer a:hover {
 
     .three-col,
     .steps-container,
-    .architecture-grid {
+    .architecture-grid,
+    .faq-grid {
         grid-template-columns: 1fr;
     }
 

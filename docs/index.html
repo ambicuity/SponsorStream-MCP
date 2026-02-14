@@ -41,9 +41,10 @@
             <nav>
                 <div class="logo">SponsorStream</div>
                 <div class="nav-links">
-                    <a href="#outcomes">Overview</a>
-                    <a href="#who-its-for">Use Cases</a>
-                    <a href="#architecture">Architecture</a>
+                    <a href="#how-it-works">How It Works</a>
+                    <a href="#who-its-for">Who It's For</a>
+                    <a href="#technical-deep-dive">Deep Dive</a>
+                    <a href="#faq">FAQs</a>
                     <a href="https://github.com/ambicuity/SponsorStream-MCP" target="_blank" class="github-link"><i
                             class="fab fa-github"></i> GitHub</a>
                 </div>
@@ -70,7 +71,7 @@
 
                 <div class="hero-buttons">
                     <a href="#get-started" class="btn btn-primary">Get Started <i class="fas fa-arrow-right"></i></a>
-                    <a href="#architecture" class="btn btn-secondary">View Architecture</a>
+                    <a href="#technical-deep-dive" class="btn btn-secondary">View Architecture</a>
                 </div>
             </div>
         </div>
@@ -78,46 +79,35 @@
 
     <main class="container">
 
-        <section id="outcomes">
+        <section id="how-it-works">
             <div class="section-header">
-                <h2>Why SponsorStream?</h2>
-                <p>Most ad systems are brittle. LLM apps need meaning-based matching.</p>
+                <h2>How It Works</h2>
+                <p>Simple, privacy-first ad matching for agents.</p>
             </div>
-
-            <div class="grid feature-grid">
-                <div class="card feature-card">
-                    <div class="icon-box"><i class="fas fa-bullseye"></i></div>
-                    <h3>Semantic Matching</h3>
-                    <p>Your agent sends context, the Engine retrieves relevant creatives using vector embeddings. No
-                        more keyword stuffing.</p>
+            <div class="steps-container">
+                <div class="step-item">
+                    <div class="step-number">01</div>
+                    <h3>Context Injection</h3>
+                    <p>Your agent sends the user's current context (chat history, page content, query) to the Engine.
+                    </p>
                 </div>
-                <div class="card feature-card">
-                    <div class="icon-box"><i class="fas fa-shield-alt"></i></div>
-                    <h3>Safety & Policy</h3>
-                    <p>Built-in policy checks and pacing ensure delivery is safe, balanced, and respects user trust.</p>
+                <div class="step-item">
+                    <div class="step-number">02</div>
+                    <h3>Semantic Retrieval</h3>
+                    <p>Engine performs embedding and Qdrant retrieval, applies targeting, policy, and pacing checks.</p>
                 </div>
-                <div class="card feature-card">
-                    <div class="icon-box"><i class="fas fa-bolt"></i></div>
-                    <h3>High Performance</h3>
-                    <p>Powered by Qdrant and FastEmbed for lightning-fast retrieval and matching tailored for real-time
-                        interactions.</p>
-                </div>
-                <!-- Executives Section merged into features for better flow -->
-                <div class="card feature-card">
-                    <div class="icon-box"><i class="fas fa-chart-pie"></i></div>
-                    <h3>Business Ready</h3>
-                    <ul>
-                        <li>📈 Relevance-first delivery</li>
-                        <li>⚙ Faster onboarding</li>
-                        <li>📋 Full auditability</li>
-                    </ul>
+                <div class="step-item">
+                    <div class="step-number">03</div>
+                    <h3>Native Rendering</h3>
+                    <p>You receive the match and render it natively—inline, sidebar, or banner. Your UI stays in
+                        control.</p>
                 </div>
             </div>
         </section>
 
         <section id="who-its-for" class="alt-bg">
             <div class="section-header">
-                <h2>Built for the Future</h2>
+                <h2>Who It's For</h2>
                 <p>Designed for the next generation of applications.</p>
             </div>
             <div class="grid three-col">
@@ -142,88 +132,98 @@
             </div>
         </section>
 
-        <section id="flow">
+        <section id="technical-deep-dive">
             <div class="section-header">
-                <h2>How It Works</h2>
-            </div>
-            <div class="steps-container">
-                <div class="step-item">
-                    <div class="step-number">01</div>
-                    <h3>Context Injection</h3>
-                    <p>Your app sends the user's current context (chat history, page content, query) to the Engine.</p>
-                </div>
-                <div class="step-item">
-                    <div class="step-number">02</div>
-                    <h3>Semantic Retrieval</h3>
-                    <p>Engine performs embedding and Qdrant retrieval, applies targeting, policy, and pacing checks.</p>
-                </div>
-                <div class="step-item">
-                    <div class="step-number">03</div>
-                    <h3>Native Rendering</h3>
-                    <p>You receive the match and render it natively—inline, sidebar, or banner. Your UI stays in
-                        control.</p>
-                </div>
-            </div>
-        </section>
-
-        <section id="architecture">
-            <div class="section-header">
-                <h2>Engine / Studio Architecture</h2>
-                <p>Separation of concerns for security and reliability.</p>
+                <h2>Technical Deep Dive</h2>
+                <p>Under the hood of SponsorStream.</p>
             </div>
 
-            <div class="architecture-grid">
-                <div class="arch-card engine">
-                    <div class="arch-header">
-                        <h3>Engine (Runtime)</h3>
-                        <span class="badge-sm">Read-Only</span>
+            <div class="tabs">
+                <button class="tab-btn active" onclick="openTab(event, 'tech-summary')">Technical Summary</button>
+                <button class="tab-btn" onclick="openTab(event, 'local-setup')">Local Setup</button>
+                <button class="tab-btn" onclick="openTab(event, 'demo')">Demo</button>
+            </div>
+
+            <div id="tech-summary" class="tab-content active">
+                <div class="architecture-grid">
+                    <div class="arch-card engine">
+                        <div class="arch-header">
+                            <h3>Engine (Runtime)</h3>
+                            <span class="badge-sm">Read-Only</span>
+                        </div>
+                        <p>Handles campaign matching and retrieval. Optimized for low latency. Called by LLMs.</p>
+                        <div class="code-block">uv run sponsorstream-engine</div>
+                        <ul class="feature-list">
+                            <li><i class="fas fa-check"></i> Semantic matching</li>
+                            <li><i class="fas fa-check"></i> Audit tracing</li>
+                            <li><i class="fas fa-check"></i> Health checks</li>
+                        </ul>
                     </div>
-                    <p>Handles campaign matching and retrieval. Optimized for low latency. Called by LLMs.</p>
-                    <div class="code-block">uv run sponsorstream-engine</div>
-                    <ul class="feature-list">
-                        <li><i class="fas fa-check"></i> Semantic matching</li>
-                        <li><i class="fas fa-check"></i> Audit tracing</li>
-                        <li><i class="fas fa-check"></i> Health checks</li>
-                    </ul>
-                </div>
 
-                <div class="arch-card studio">
-                    <div class="arch-header">
-                        <h3>Studio (Admin)</h3>
-                        <span class="badge-sm">Write Access</span>
+                    <div class="arch-card studio">
+                        <div class="arch-header">
+                            <h3>Studio (Admin)</h3>
+                            <span class="badge-sm">Write Access</span>
+                        </div>
+                        <p>Manages provisioning, ingestion, and operations. Called by Humans or CI pipelines.</p>
+                        <div class="code-block">uv run sponsorstream-studio</div>
+                        <ul class="feature-list">
+                            <li><i class="fas fa-check"></i> Collection management</li>
+                            <li><i class="fas fa-check"></i> Batch ingestion</li>
+                            <li><i class="fas fa-check"></i> Analytics reporting</li>
+                        </ul>
                     </div>
-                    <p>Manages provisioning, ingestion, and operations. Called by Humans or CI pipelines.</p>
-                    <div class="code-block">uv run sponsorstream-studio</div>
-                    <ul class="feature-list">
-                        <li><i class="fas fa-check"></i> Collection management</li>
-                        <li><i class="fas fa-check"></i> Batch ingestion</li>
-                        <li><i class="fas fa-check"></i> Analytics reporting</li>
-                    </ul>
                 </div>
             </div>
-        </section>
 
-        <section id="get-started" class="cta-section">
-            <h2>Ready to Stream?</h2>
-            <p>Get up and running in minutes with Python 3.10+, uv, and Docker.</p>
-
-            <div class="installation-steps">
-                <div class="install-step">
-                    <span>1. Install uv</span>
-                    <pre><code>curl -LsSf https://astral.sh/uv/install.sh | sh</code></pre>
-                </div>
-                <div class="install-step">
-                    <span>2. Start Qdrant</span>
-                    <pre><code>docker run -d --name qdrant -p 6333:6333 -p 6334:6334 qdrant/qdrant</code></pre>
-                </div>
-                <div class="install-step">
-                    <span>3. Sync & Seed</span>
-                    <pre><code>uv sync && uv run sponsorstream-cli create && uv run sponsorstream-cli seed</code></pre>
-                </div>
-                <div class="install-step">
-                    <span>4. Run Servers</span>
-                    <pre><code>uv run sponsorstream-engine
+            <div id="local-setup" class="tab-content">
+                <div class="installation-steps">
+                    <div class="install-step">
+                        <span>1. Install uv</span>
+                        <pre><code>curl -LsSf https://astral.sh/uv/install.sh | sh</code></pre>
+                    </div>
+                    <div class="install-step">
+                        <span>2. Start Qdrant</span>
+                        <pre><code>docker run -d --name qdrant -p 6333:6333 -p 6334:6334 qdrant/qdrant</code></pre>
+                    </div>
+                    <div class="install-step">
+                        <span>3. Sync & Seed</span>
+                        <pre><code>uv sync && uv run sponsorstream-cli create && uv run sponsorstream-cli seed</code></pre>
+                    </div>
+                    <div class="install-step">
+                        <span>4. Run Servers</span>
+                        <pre><code>uv run sponsorstream-engine
 uv run sponsorstream-studio</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div id="demo" class="tab-content">
+                <div class="demo-placeholder">
+                    <div class="icon-box"><i class="fas fa-play-circle"></i></div>
+                    <h3>Live Demo Coming Soon</h3>
+                    <p>Watch how the engine matches context in real-time.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="faq">
+            <div class="section-header">
+                <h2>Frequently Asked Questions</h2>
+            </div>
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <h3>Is this an ad server?</h3>
+                    <p>Yes, but for agents. It prioritizes semantic relevance over keyword bidding.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Can I use it for RAG?</h3>
+                    <p>Absolutely. It fits perfectly into a RAG pipeline to inject sponsored chunks alongside organic
+                        ones.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Is it open source?</h3>
+                    <p>Yes, SponsorStream is open source and available on GitHub.</p>
                 </div>
             </div>
         </section>
@@ -231,7 +231,8 @@ uv run sponsorstream-studio</code></pre>
         <section id="contact" class="footer-cta">
             <div class="container">
                 <h2>Get in Touch</h2>
-                <p>Want native sponsor inserts that don’t trash your product? Let's talk.</p>
+                <p>If you’re building MCP tooling, retrieval systems, or monetization for LLM apps, I’m happy to help
+                    you pressure-test your architecture and integration plan.</p>
                 <div class="social-links">
                     <a href="https://github.com/ambicuity/SponsorStream-MCP" class="btn btn-outline"><i
                             class="fab fa-github"></i> GitHub</a>
@@ -248,10 +249,28 @@ uv run sponsorstream-studio</code></pre>
 
     <footer>
         <div class="container">
-            <p>&copy; 2024 SponsorStream MCP. All rights reserved.</p>
+            <p>&copy; 2026 SponsorStream MCP. All rights reserved.</p>
             <p class="credits">Created by <a href="https://github.com/ritesh1904">Ritesh Rana</a></p>
         </div>
     </footer>
+
+    <script>
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+                tabcontent[i].classList.remove("active");
+            }
+            tablinks = document.getElementsByClassName("tab-btn");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).style.display = "block";
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.className += " active";
+        }
+    </script>
 
 </body>
 
