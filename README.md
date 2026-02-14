@@ -17,7 +17,7 @@
   </p>
 
   <p align="center">
-    🐦 <a href="https://twitter.com/charoori_ai">Follow Updates</a> •
+    🐦 <a href="https://x.com/mr19042000">Follow Updates</a> •
     📧 <a href="mailto:ritesh19@bu.edu?subject=SponsorStream-MCP">Contact & Feedback</a>
   </p>
 
@@ -464,5 +464,5 @@ The Data Plane `ads_match` tool uses typed DTOs — no raw dict filters are acce
 I’m always up for nerding out about MCP tooling, retrieval systems, and practical LLM monetization.  
 If you’re building something similar—or want to pressure-test your architecture—reach out:
 
-- 🐦 Twitter: https://twitter.com/charoori_ai  
+- 🐦 Twitter: https://x.com/mr19042000  
 - 📧 Email: mailto:ritesh19@bu.edu?subject=SponsorStream-MCP
