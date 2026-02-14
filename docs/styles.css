@@ -39,6 +39,44 @@
     --radius-lg: 16px;
 }
 
+/* Light Mode Variables */
+body.light-mode {
+    --primary-color: #ffffff;
+    --secondary-color: #f4f6f8;
+
+    --accent-color: #00a86b;
+    /* Darker Green for contrast */
+    --accent-hover: #008f5d;
+    --accent-blue: #007acc;
+    --accent-purple: #8e44ad;
+
+    --text-primary: #1a1a1a;
+    --text-secondary: #555555;
+    --border-color: #e1e4e8;
+    --card-bg: #ffffff;
+    --shadow-lg: 0 10px 15px -3px rgba(0, 168, 107, 0.15);
+}
+
+/* Theme Toggle Button */
+.theme-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.theme-btn:hover {
+    color: var(--accent-color);
+    background-color: rgba(128, 128, 128, 0.1);
+}
+
 /* Base Styles */
 * {
     box-sizing: border-box;
@@ -118,7 +156,7 @@ nav {
     font-family: var(--font-heading);
     font-size: 1.5rem;
     font-weight: 700;
-    background: linear-gradient(135deg, #fff, #8b949e);
+    background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -457,12 +495,12 @@ section {
 }
 
 .arch-card.engine {
-    background: linear-gradient(180deg, rgba(22, 27, 34, 1) 0%, rgba(35, 134, 54, 0.05) 100%);
+    background: linear-gradient(180deg, var(--card-bg) 0%, rgba(35, 134, 54, 0.05) 100%);
     border-top: 3px solid var(--accent-color);
 }
 
 .arch-card.studio {
-    background: linear-gradient(180deg, rgba(22, 27, 34, 1) 0%, rgba(31, 111, 235, 0.05) 100%);
+    background: linear-gradient(180deg, var(--card-bg) 0%, rgba(31, 111, 235, 0.05) 100%);
     border-top: 3px solid #1f6feb;
 }
 
@@ -533,11 +571,12 @@ section {
 
 .install-step pre {
     margin: 0;
-    background-color: #0d1117;
+    background-color: var(--secondary-color);
     border: none;
     padding: 1rem;
     border-radius: 6px;
-    color: #79c0ff;
+    color: var(--text-primary);
+    font-family: inherit;
 }
 
 /* Footer & Contact */

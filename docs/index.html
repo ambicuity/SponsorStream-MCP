@@ -45,6 +45,9 @@
                     <a href="#who-its-for">Who It's For</a>
                     <a href="#technical-deep-dive">Deep Dive</a>
                     <a href="#faq">FAQs</a>
+                    <button id="theme-toggle" class="theme-btn" aria-label="Toggle Dark Mode">
+                        <i class="fas fa-moon"></i>
+                    </button>
                     <a href="https://github.com/ambicuity/SponsorStream-MCP" target="_blank" class="github-link"><i
                             class="fab fa-github"></i> GitHub</a>
                 </div>
@@ -270,6 +273,33 @@ uv run sponsorstream-studio</code></pre>
             document.getElementById(tabName).classList.add("active");
             evt.currentTarget.className += " active";
         }
+
+        // Theme Toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
+        const icon = themeToggle.querySelector('i');
+
+        // Check for saved user preference
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+            body.classList.add('light-mode');
+            icon.classList.remove('fa-moon');
+            icon.classList.add('fa-sun');
+        }
+
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('light-mode');
+
+            if (body.classList.contains('light-mode')) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+                localStorage.setItem('theme', 'light');
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+                localStorage.setItem('theme', 'dark');
+            }
+        });
     </script>
 
 </body>
