@@ -637,6 +637,42 @@ body.light-mode .step-number {
     border-radius: 6px;
     color: var(--text-primary);
     font-family: inherit;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-break: break-all;
+    font-size: 0.9rem;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.5rem;
+    }
+
+    .three-col,
+    .four-col,
+    .steps-container,
+    .architecture-grid,
+    .why-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .install-step {
+        padding: 1rem;
+    }
+
+    .install-step pre {
+        padding: 0.75rem;
+        font-size: 0.85rem;
+    }
+
+    .feature-card {
+        padding: 1.5rem;
+    }
+
+    .footer-cta h2 {
+        font-size: 2rem;
+    }
 }
 
 /* Footer & Contact */
