@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="Adkit.png" alt="AdKit Logo">
+  <img src="SponsorStream%20MCP.png" alt="SponsorStream-MCP Logo">
   
   <p>
     <strong>A lightweight, semantic ad-engine for the LLMs, available through MCP</strong>
