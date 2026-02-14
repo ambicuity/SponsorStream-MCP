@@ -294,6 +294,47 @@ uv run sponsorstream-studio</code></pre>
                         <p>Yes, SponsorStream is open source and available on GitHub under the MIT License.</p>
                     </div>
                 </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>Can I test matches without spending budget?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Yes. Use the <code>campaigns_match_dry_run</code> tool to simulate matching with different
+                            constraints without impacting pacing or analytics.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>How do I track performance?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>The <code>campaigns_metrics</code> tool provides detailed breakdowns of success rates, score
+                            distributions, and constraint rejection reasons.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>What if matches aren't working?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Run <code>campaigns_diagnostics</code> to check collection health and identify common
+                            blocking issues like strict constraints or budget exhaustion.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>Can I simulate different users?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Yes. When calling <code>campaigns_match</code>, you can vary the <code>context_text</code>
+                            and <code>audience_segments</code> to see how the system adapts to different user personas.
+                        </p>
+                    </div>
+                </div>
             </div>
         </section>
 
