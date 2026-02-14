@@ -7,16 +7,16 @@ import uuid
 
 import pytest
 
-from ad_injector.domain.filters import VectorFilter
-from ad_injector.domain.policy_engine import PolicyEngine
-from ad_injector.domain.targeting_engine import TargetingEngine
-from ad_injector.services.match_service import MatchService
-from ad_injector.models.mcp_requests import (
+from sponsorstream_mcp.domain.filters import VectorFilter
+from sponsorstream_mcp.domain.policy_engine import PolicyEngine
+from sponsorstream_mcp.domain.targeting_engine import TargetingEngine
+from sponsorstream_mcp.services.match_service import MatchService
+from sponsorstream_mcp.models.mcp_requests import (
     MatchConstraints,
     MatchRequest,
     PlacementContext,
 )
-from ad_injector.ports.vector_store import VectorHit
+from sponsorstream_mcp.ports.vector_store import VectorHit
 
 # ---------------------------------------------------------------------------
 # Fakes

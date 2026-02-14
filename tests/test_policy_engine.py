@@ -2,9 +2,9 @@
 
 import pytest
 
-from ad_injector.domain.policy_engine import PolicyEngine
-from ad_injector.models.mcp_requests import MatchConstraints, PlacementContext
-from ad_injector.ports.vector_store import VectorHit
+from sponsorstream_mcp.domain.policy_engine import PolicyEngine
+from sponsorstream_mcp.models.mcp_requests import MatchConstraints, PlacementContext
+from sponsorstream_mcp.ports.vector_store import VectorHit
 
 
 def _make_hit(

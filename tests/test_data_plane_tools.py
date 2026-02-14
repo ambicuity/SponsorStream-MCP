@@ -4,8 +4,8 @@ No destructive or admin tools (collection create/delete, upsert, delete_ad,
 query_ads) may be registered on the Data Plane.
 """
 
-from ad_injector.mcp.server import create_server
-from ad_injector.mcp.tools import DATA_PLANE_ALLOWED_TOOLS
+from sponsorstream_mcp.mcp.server import create_server
+from sponsorstream_mcp.mcp.tools import DATA_PLANE_ALLOWED_TOOLS
 
 # Tools that must NEVER appear on the Data Plane
 FORBIDDEN_TOOLS = {

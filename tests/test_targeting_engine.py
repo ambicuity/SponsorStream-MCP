@@ -2,9 +2,9 @@
 
 import pytest
 
-from ad_injector.domain.filters import FieldFilter, FilterOp, VectorFilter
-from ad_injector.domain.targeting_engine import TargetingEngine
-from ad_injector.models.mcp_requests import MatchConstraints, PlacementContext
+from sponsorstream_mcp.domain.filters import FieldFilter, FilterOp, VectorFilter
+from sponsorstream_mcp.domain.targeting_engine import TargetingEngine
+from sponsorstream_mcp.models.mcp_requests import MatchConstraints, PlacementContext
 
 
 def _build_filter(**constraint_kwargs) -> VectorFilter:

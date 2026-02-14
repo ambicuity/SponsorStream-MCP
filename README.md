@@ -18,11 +18,11 @@
 
   <p align="center">
     🐦 <a href="https://twitter.com/charoori_ai">Follow Updates</a> •
-    📧 <a href="mailto:chandrahas.aroori@gmail.com?subject=AdKit">Contact & Feedback</a>
+    📧 <a href="mailto:ritesh19@bu.edu?subject=SponsorStream-MCP">Contact & Feedback</a>
   </p>
 
   <p>
-    <a href="https://www.buymeacoffee.com/charoori_ai" target="_blank">
+    <a href="https://buymeacoffee.com/ritesh.rana" target="_blank">
       <img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="35">
     </a>
   </p>
@@ -34,9 +34,9 @@ A simple MCP Server that serves advertisements to LLMs! Use this to Inject Adver
 ## Introduction
 
 
-**AdKit** is a lightweight semantic ad-matching engine built for **LLM applications**. It exposes a small, safe tool surface via **MCP** so agents can request relevant ads using natural-language context (chat turns, page content, search queries) — without brittle keyword rules.
+**SponsorStream-MCP** is a lightweight semantic ad-matching engine built for **LLM applications**. It exposes a small, safe tool surface via **MCP** so agents can request relevant ads using natural-language context (chat turns, page content, search queries) — without brittle keyword rules.
 
-Under the hood, AdKit embeds your context locally (FastEmbed) and retrieves candidates from **Qdrant** using vector similarity plus **typed constraints** (topics, locale, verticals, exclusions, policy flags). It’s designed with a hard security boundary: the **Data Plane** is read-only and allowlisted, while the **Control Plane** handles ingestion and admin operations separately.
+Under the hood, SponsorStream-MCP embeds your context locally (FastEmbed) and retrieves candidates from **Qdrant** using vector similarity plus **typed constraints** (topics, locale, verticals, exclusions, policy flags). It’s designed with a hard security boundary: the **Data Plane** is read-only and allowlisted, while the **Control Plane** handles ingestion and admin operations separately.
 
 Use it when you want “native” sponsor inserts or product recommendations that match meaning, not strings — and you want the architecture to stay sane when you ship to production.
 
@@ -150,8 +150,8 @@ To use a different file: `uv run ad-index seed --file path/to/ads.json`
 
   ```bash
   uv run python -c "
-  from ad_injector.wiring import build_match_service
-  from ad_injector.models.mcp_requests import MatchRequest
+  from sponsorstream_mcp.wiring import build_match_service
+  from sponsorstream_mcp.models.mcp_requests import MatchRequest
   r, _ = build_match_service().match(MatchRequest(context_text='python', top_k=2))
   print(r.model_dump_json(indent=2))
   "
@@ -192,7 +192,7 @@ The Data Plane uses an explicit allowlist (`DATA_PLANE_ALLOWED_TOOLS`). No destr
 ### Repo structure
 
 ```
-src/ad_injector/
+src/sponsorstream_mcp/
   models/           # Ad, Targeting, Policy; MCP request/response DTOs
   services/         # MatchService, PolicyEngine, TargetingEngine, IndexService
   adapters/         # QdrantVectorStore, FastEmbedProvider
@@ -240,10 +240,10 @@ uv run ad-index delete          # Delete the collection
 ### Run Python Files Directly
 
 ```bash
-uv run python -m ad_injector.main_runtime   # Data Plane MCP
-uv run python -m ad_injector.main_control   # Control Plane MCP
-uv run python -m ad_injector.cli create     # Control Plane CLI
-uv run python -m ad_injector.cli seed
+uv run python -m sponsorstream_mcp.main_runtime   # Data Plane MCP
+uv run python -m sponsorstream_mcp.main_control   # Control Plane MCP
+uv run python -m sponsorstream_mcp.cli create     # Control Plane CLI
+uv run python -m sponsorstream_mcp.cli seed
 ```
 
 **Note**: The `seed` command loads demo ads from `data/test_ads.json` (or `--file <path>`) and upserts them into the collection. Run `create` first to set up the collection, then `seed` to load the test data.
@@ -265,8 +265,8 @@ This runs the Data Plane guardrail tests which assert:
 
 ```bash
 uv run python -c "
-from ad_injector.mcp.server import create_server
-from ad_injector.mcp.tools import DATA_PLANE_ALLOWED_TOOLS
+from sponsorstream_mcp.mcp.server import create_server
+from sponsorstream_mcp.mcp.tools import DATA_PLANE_ALLOWED_TOOLS
 s = create_server('data')
 tools = set(s._tool_manager._tools.keys())
 print(f'Server: {s.name}')
@@ -280,7 +280,7 @@ print('PASS: Data Plane allowlist registered')
 
 ```bash
 uv run python -c "
-from ad_injector.mcp.server import create_server
+from sponsorstream_mcp.mcp.server import create_server
 s = create_server('admin')
 tools = set(s._tool_manager._tools.keys())
 print(f'Server: {s.name}')
@@ -295,7 +295,7 @@ print('PASS: admin tools registered, no ads_match')
 
 ```bash
 uv run python -c "
-from ad_injector.models import MatchRequest, MatchConstraints, PlacementContext, MatchResponse, AdCandidate
+from sponsorstream_mcp.models import MatchRequest, MatchConstraints, PlacementContext, MatchResponse, AdCandidate
 
 # Valid request
 req = MatchRequest(
@@ -329,13 +329,13 @@ except Exception:
 ```bash
 # Defaults
 uv run python -c "
-from ad_injector.config import get_settings
+from sponsorstream_mcp.config import get_settings
 s = get_settings()
 print(f'host={s.qdrant_host} port={s.qdrant_port} model={s.embedding_model_id}')
 "
 
 # Invalid port fails fast
-QDRANT_PORT=99999 uv run python -c "from ad_injector.config.runtime import RuntimeSettings; RuntimeSettings()" 2>&1 | head -3
+QDRANT_PORT=99999 uv run python -c "from sponsorstream_mcp.config.runtime import RuntimeSettings; RuntimeSettings()" 2>&1 | head -3
 ```
 
 ### 6. Verify import isolation (Data Plane does not load admin code)
@@ -343,9 +343,9 @@ QDRANT_PORT=99999 uv run python -c "from ad_injector.config.runtime import Runti
 ```bash
 uv run python -c "
 import sys
-from ad_injector.main_runtime import main
-mods = [m for m in sys.modules if m.startswith('ad_injector')]
-assert 'ad_injector.cli' not in mods, 'FAIL: cli imported'
+from sponsorstream_mcp.main_runtime import main
+mods = [m for m in sys.modules if m.startswith('sponsorstream_mcp')]
+assert 'sponsorstream_mcp.cli' not in mods, 'FAIL: cli imported'
 print('PASS: main_runtime has clean import graph (no admin modules)')
 "
 ```
@@ -382,9 +382,9 @@ Each ad stored in Qdrant contains:
 ## Usage Example
 
 ```python
-from ad_injector.models import Ad, AdTargeting, AdPolicy
-from ad_injector.wiring import build_index_service, build_match_service
-from ad_injector.models.mcp_requests import MatchRequest
+from sponsorstream_mcp.models import Ad, AdTargeting, AdPolicy
+from sponsorstream_mcp.wiring import build_index_service, build_match_service
+from sponsorstream_mcp.models.mcp_requests import MatchRequest
 
 # Create the collection (once) and seed ads via IndexService
 index_svc = build_index_service()
@@ -465,4 +465,4 @@ I’m always up for nerding out about MCP tooling, retrieval systems, and practi
 If you’re building something similar—or want to pressure-test your architecture—reach out:
 
 - 🐦 Twitter: https://twitter.com/charoori_ai  
-- 📧 Email: mailto:chandrahas.aroori@gmail.com?subject=AdKit
+- 📧 Email: mailto:ritesh19@bu.edu?subject=SponsorStream-MCP

@@ -1,5 +1,5 @@
 [project]
-name = "ad-injector"
+name = "sponsorstream-mcp"
 version = "0.1.0"
 description = "Ad injector application"
 requires-python = ">=3.10,<3.14"
@@ -13,11 +13,11 @@ dependencies = [
 ]
 
 [project.scripts]
-ad-injector = "ad_injector.main:main"
-ad-index = "ad_injector.cli:main"
-ad-mcp-control = "ad_injector.main_control:main"
-ad-mcp-data = "ad_injector.main_runtime:main"
-ad-data-plane = "ad_injector.main_runtime:main"
+ad-injector = "sponsorstream_mcp.main:main"
+ad-index = "sponsorstream_mcp.cli:main"
+ad-mcp-control = "sponsorstream_mcp.main_control:main"
+ad-mcp-data = "sponsorstream_mcp.main_runtime:main"
+ad-data-plane = "sponsorstream_mcp.main_runtime:main"
 
 [build-system]
 requires = ["hatchling"]
