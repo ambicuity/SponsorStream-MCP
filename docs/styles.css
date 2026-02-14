@@ -475,6 +475,10 @@ section {
     position: relative;
 }
 
+body.light-mode .step-number {
+    color: rgba(0, 0, 0, 0.05);
+}
+
 .step-item h3 {
     font-size: 1.5rem;
     margin-bottom: 0.5rem;
